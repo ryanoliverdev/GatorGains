@@ -1,4 +1,3 @@
-import { SessionProvider } from "next-auth/react";
 import { Providers } from "./providers";
 import type { ReactNode } from 'react';
 
