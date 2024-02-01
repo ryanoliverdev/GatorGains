@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const {data: session} = useSession();
 
   return (
     <div>
@@ -14,12 +14,10 @@ export default function Home() {
 
       <main>
         <h1>Welcome to the App Page</h1>
-        {status === "loading" && <p>Loading...</p>}
-
         {!session ? (
           <>
-            <p>You are not signed in.</p>
-            <button onClick={() => signIn("google")}>Sign in</button>
+            <p>Not signed in</p>
+            <button onClick={() => signIn("google")}> Sign in with Google </button>
           </>
         ) : (
           <>
