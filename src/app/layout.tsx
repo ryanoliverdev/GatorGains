@@ -1,15 +1,11 @@
-import { Providers } from "./providers";
+import { Providers } from './providers';
 import type { ReactNode } from 'react';
 
-export default function RootLayout({
-  children
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-          <Providers>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
