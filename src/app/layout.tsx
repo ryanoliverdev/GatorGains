@@ -1,17 +1,18 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import {SiteHeader} from "@/components/navbar/site-nav";
+import { Providers } from './providers';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { SiteHeader } from '@/components/navbar/site-nav';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "GatorGains",
-  description: "Modern Fitness and Nutrition Tracker",
+  title: 'GatorGains',
+  description: 'Modern Fitness and Nutrition Tracker'
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -19,8 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SiteHeader></SiteHeader>
-        {children}
-        </body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
