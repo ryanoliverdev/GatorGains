@@ -71,7 +71,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-base">Email</FormLabel>
                     <FormControl>
                       <Input
                         className="mb-3"
@@ -93,7 +93,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-base">Password</FormLabel>
                     <FormControl>
                       <Input
                         id="password"
