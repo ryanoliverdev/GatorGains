@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/ui/icons";
-import { MainNav } from "@/components/navbar/main-nav";
-import { MobileNav } from "@/components/navbar/mobile-nav";
-import { buttonVariants } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Icons } from '@/components/ui/icons';
+import { MainNav } from '@/components/navbar/main-nav';
+import { MobileNav } from '@/components/navbar/mobile-nav';
+import { buttonVariants } from '@/components/ui/button';
 
 export function SiteHeader() {
   return (

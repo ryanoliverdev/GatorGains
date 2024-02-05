@@ -22,6 +22,9 @@ import {
 import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
+  name: z.string().min(1, {
+    message: 'You need to enter a name'
+  }),
   email: z
     .string()
     .min(1, { message: 'This field has to be filled.' })
@@ -48,15 +51,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
 
-    const email = values.email;
-    const password = values.password;
-
     try {
-      const res = await signIn('signin', {
-        redirect: false,
-        email,
-        password
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      setIsLoading(false);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -70,10 +73,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <div className="grid gap-1">
               <FormField
                 control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="mb-3"
+                        id="name"
+                        type="name"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                        autoCorrect="off"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base">Email</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
                         className="mb-3"
@@ -95,7 +120,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base">Password</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
                         id="password"
@@ -116,34 +141,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Log In
+              Register
             </Button>
           </div>
         </form>
       </Form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or log in with
-          </span>
-        </div>
-      </div>
-      <Button
-        variant="outline"
-        type="button"
-        disabled={isLoading}
-        onClick={() => signIn('google')}
-      >
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}{' '}
-        Google
-      </Button>
     </div>
   );
 }
