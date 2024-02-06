@@ -12,22 +12,16 @@ export default function Login() {
         </div>
         <UserAuthForm />
         <p className="px-8 text-center text-sm text-muted-foreground">
-          By clicking continue, you agree to our{' '}
+          If you're not already a member of Gator Gains{' '}
           <Link
-            href="/terms"
+            href="/register"
             className="underline underline-offset-4 hover:text-primary"
           >
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link
-            href="/privacy"
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Privacy Policy
+            register here
           </Link>
-          .
+          !
         </p>
+        
       </div>
     </div>
   );
