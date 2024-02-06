@@ -13,7 +13,9 @@ export function SiteHeader() {
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-center md:justify-end">
-          <span className="sm:hidden font-bold mr-[20px]">GatorGains</span>
+          <Link href="/" className="md:hidden font-bold mr-[20px]">
+            <span className="font-bold">GatorGains</span>
+          </Link>
         </div>
       </div>
     </header>
