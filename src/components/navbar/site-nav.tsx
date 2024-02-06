@@ -5,6 +5,7 @@ import { Icons } from '@/components/ui/icons';
 import { MainNav } from '@/components/navbar/main-nav';
 import { MobileNav } from '@/components/navbar/mobile-nav';
 import { buttonVariants } from '@/components/ui/button';
+import { AvatarMenu } from './avatarMenu';
 
 export function SiteHeader() {
   return (
@@ -13,10 +14,11 @@ export function SiteHeader() {
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-center md:justify-end">
-          <Link href="/" className="md:hidden font-bold mr-[20px]">
+          <Link href="/" className="md:hidden font-bold">
             <span className="font-bold">GatorGains</span>
           </Link>
         </div>
+        <AvatarMenu />
       </div>
     </header>
   );
