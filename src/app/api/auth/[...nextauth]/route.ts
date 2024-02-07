@@ -1,10 +1,12 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { PrismaAdapter} from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 import { compare } from 'bcryptjs';
 
 const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60 // 30 days
@@ -35,7 +37,7 @@ const authOptions: NextAuthOptions = {
           }
         });
 
-        if (!user || !(await compare(credentials.password, user.password))) {
+        if (!user || !(await compare(credentials.password, user.password!!))) {
           return null;
         }
 
@@ -47,6 +49,13 @@ const authOptions: NextAuthOptions = {
       }
     })
   ],
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(baseUrl);
+    }
+  },
   secret: process.env.NEXTAUTH_SECRET
 };
 
