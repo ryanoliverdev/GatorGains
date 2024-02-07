@@ -5,8 +5,11 @@ import { PrismaAdapter} from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 import { compare } from 'bcryptjs';
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/login"
+  },
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60 // 30 days
@@ -44,7 +47,8 @@ const authOptions: NextAuthOptions = {
         return {
           id: user.id.toString(),
           email: user.email,
-          name: user.name
+          name: user.name,
+          picture: user.image
         };
       }
     })

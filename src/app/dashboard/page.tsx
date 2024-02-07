@@ -1,28 +1,20 @@
-'use client'
+"use server"
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { DashboardFinal } from "@/components/features/dashboard/page";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 
-export default function Dashboard() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push('/');
-    }
-  }, [status, router]);
+export default async function Dashboard() {
+  
+  const session = await getServerSession(authOptions)
 
   // If there's a session (user is logged in), render the dashboard
-  if (status === "authenticated") {
+ 
     return (
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome, {session.user!!.email}</p>
-        {/* Rest of your dashboard code */}
-        <button onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}>sign out</button>
-      </div>
+      <DashboardFinal options={session}></DashboardFinal>
     );
-  }
+  
 }
