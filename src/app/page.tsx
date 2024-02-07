@@ -10,13 +10,8 @@ import {
 
 export default function Home() {
   return (
-    <>
     <HeroHeader />
-    <HeroHeader />
-    <HeroHeader />
-    <HeroHeader />
-    <HeroHeader />
-    </>
+
 
   
   )
