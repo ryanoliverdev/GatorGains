@@ -19,11 +19,13 @@ import {
   FormLabel,
   FormMessage
 } from '../ui/form';
+import { useToast } from '../ui/use-toast';
 import { signIn } from 'next-auth/react';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
+import { ToastAction } from '@radix-ui/react-toast';
 
 const formSchema = z
   .object({
@@ -58,6 +60,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const toast = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,8 +75,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   // THIS IS WHERE YOU WILL IMPLEMENT REGISTER TO NEXTAUTH
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
     try {
       const res = await fetch('/api/register', {
         method: 'POST',
@@ -82,8 +83,28 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           'Content-Type': 'application/json'
         }
       });
+      if (res.status == 200) {
+        signIn('credentials', { 
+          email: values.email,
+          password: values.password,
+          redirect: true,
+          callbackUrl: `${window.location.origin}/dashboard` });
+      } else if (res.status == 400) {
+        toast.toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "A user with that email already exists",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
       setIsLoading(false);
     } catch (error: any) {
+      toast.toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
       console.log(error.message);
     }
   }
