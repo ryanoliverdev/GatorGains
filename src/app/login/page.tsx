@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 export default function Login() {
   return (
+    <>
     <div className="container my-20">
       <div className="mx-auto flex w-full flex-col sm:p-8 sm:shadow-xl justify-center space-y-6 sm:w-[400px]">
         <div className="flex flex-col space-y-2 text-center">
@@ -24,5 +25,7 @@ export default function Login() {
         
       </div>
     </div>
+    
+    </>
   );
 }
