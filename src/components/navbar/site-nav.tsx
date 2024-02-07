@@ -8,7 +8,7 @@ import { MobileNav } from '@/components/navbar/mobile-nav';
 import { buttonVariants } from '@/components/ui/button';
 import { AvatarMenu } from './avatarMenu';
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 
 export async function SiteHeader() {
 
