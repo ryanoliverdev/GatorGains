@@ -52,11 +52,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const password = values.password;
 
     try {
-      const res = await signIn('signin', {
-        redirect: false,
-        email,
-        password
-      });
+      signIn('credentials', { 
+        email, 
+        password, 
+        redirect: true,
+        callbackUrl: `${window.location.origin}/dashboard` });
     } catch (error: any) {
       console.log(error.message);
     }
