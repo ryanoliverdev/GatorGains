@@ -51,11 +51,13 @@ const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl)
-        ? Promise.resolve(url)
-        : Promise.resolve(baseUrl);
-    }
+      if (url.startsWith(baseUrl) && !url.includes("/dashboard")) {
+        return `${baseUrl}/dashboard`;
+      }
+      return url.startsWith(baseUrl) ? url : baseUrl;
+    },
   },
+  
   secret: process.env.NEXTAUTH_SECRET
 };
 
