@@ -7,7 +7,7 @@ export function DashboardFinal({ options }: { options: any }) {
     <div>
       <h1>Dashboard</h1>
       <p>Welcome, {options.user.name}</p>
-      <p>Here's your avatar, </p>
+      <p>Here&apos;s your avatar, </p>
       <img src={options.user.image} alt="react logo" />
     </div>
   );
