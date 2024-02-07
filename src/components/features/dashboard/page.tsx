@@ -9,10 +9,6 @@ export function DashboardFinal({ options }: { options: any }) {
       <p>Welcome, {options.user.name}</p>
       <p>Here's your avatar, </p>
       <img src={options.user.image} alt="react logo" />
-
-      <button onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}>
-        sign out
-      </button>
     </div>
   );
 }
