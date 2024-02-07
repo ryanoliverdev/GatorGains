@@ -12,7 +12,7 @@ export default function Login() {
         </div>
         <UserAuthForm />
         <p className="px-8 text-center text-sm text-muted-foreground">
-          If you&apos;re not already a member of Gator Gains {" "}
+          If you&apos;re not already a member of Gator Gains{' '}
           <Link
             href="/register"
             className="underline underline-offset-4 hover:text-primary"
@@ -21,7 +21,6 @@ export default function Login() {
           </Link>
           !
         </p>
-        
       </div>
     </div>
   );
