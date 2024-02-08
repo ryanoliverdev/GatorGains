@@ -11,17 +11,17 @@ export default function Footer() {
 
     <div className="mt-auto">
       <footer className=" w-full mx-auto max-w-screen-xl p-6 md:py-8">
-        <div className="sm:flex sm:items-center sm:justify-between">
+        <div className="flex flex-col lg:flex-row mx-auto items-center justify-between">
           <Link href="/">
-            <h1 className="mb-2 text-2xl font-bold sm:mb-0 mr-4">
+            <h1 className="sm:text-center mb-8 text-2xl font-bold lg:mb-0 lg:mr-8">
               GatorGains
             </h1>
           </Link>
-          <ul className="mb-6 flex flex-wrap items-center sm:mb-0">
+          <ul className="mb-6 md:w-auto grid grid-cols-4 gap-x-8 lg:gap-x-48 gap-y-2 items-center sm:mb-0">
             {footerLinks.map((link) => (
               <li key={link.route}>
                 <Link href={link.path}                   className={cn(
-                    'mr-4 transition-colors hover:text-foreground/80 md:mr-6',
+                    'mr-4 transition-colors hover:text-foreground/80 hover:underline md:mr-6',
                     pathname === link.path
                       ? 'text-foreground'
                       : 'text-foreground/60'
