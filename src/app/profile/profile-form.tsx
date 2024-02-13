@@ -29,7 +29,7 @@ import { toast } from "@/components/ui/use-toast"
 import { prisma } from '@/lib/prisma';
 
 interface SessionProps {
-  email: String
+  email: string
 }
 
 const profileFormSchema = z.object({

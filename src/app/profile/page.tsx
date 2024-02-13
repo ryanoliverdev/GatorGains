@@ -7,7 +7,7 @@ export default async function SettingsProfilePage() {
   const session = await getServerSession(authOptions)
   return (
     <div className="space-y-6">
-      <ProfileForm email={session?.user?.email}/>
+      <ProfileForm email={session?.user?.email || ''}/>
     </div>
   );
 }
