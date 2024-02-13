@@ -45,14 +45,7 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  bio           String?
   accounts      Account[]
   sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }

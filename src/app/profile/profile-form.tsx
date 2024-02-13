@@ -26,6 +26,11 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
+import { prisma } from '@/lib/prisma';
+
+interface SessionProps {
+  email: String
+}
 
 const profileFormSchema = z.object({
   username: z
@@ -62,7 +67,7 @@ const defaultValues: Partial<ProfileFormValues> = {
   ],
 }
 
-export function ProfileForm() {
+export function ProfileForm({ email }: SessionProps) {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -74,7 +79,16 @@ export function ProfileForm() {
     control: form.control,
   })
 
-  function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: ProfileFormValues) {
+    const { bio } = data;
+    console.log({ email, bio });
+    const res = await fetch('/api/update', {
+      method: 'POST',
+      body: JSON.stringify({ email, bio }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     toast({
       title: "You submitted the following values:",
       description: (
@@ -119,7 +133,7 @@ export function ProfileForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
+                  <SelectItem value="pohlgeon@gmail.com">pohlgeon@gmail.com</SelectItem>
                   <SelectItem value="m@support.com">m@support.com</SelectItem>
                 </SelectContent>
               </Select>

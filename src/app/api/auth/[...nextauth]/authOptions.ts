@@ -33,7 +33,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
-        console.log('in authorize');
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email

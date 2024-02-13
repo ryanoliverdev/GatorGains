@@ -46,8 +46,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   // THIS IS WHERE YOU WILL IMPLEMENT LOGIN TO NEXTAUTH
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
     const email = values.email;
     const password = values.password;
 
