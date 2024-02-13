@@ -46,6 +46,32 @@ model User {
   emailVerified DateTime?
   image         String?
   bio           String?
+  streak        Int       @default(0)
+  workouts      Workout[]
   accounts      Account[]
   sessions      Session[]
+}
+
+model Workout {
+  id            String    @id @default(cuid())
+  userId        String
+  workoutDate   DateTime
+  workoutType   String?
+  duration      Int?
+  user          User      @relation(fields: [userId], references: [id])
+  stats         Stat[]
+  caloriesBurned Int?
+  @@index([userId])
+}
+
+model Stat {
+  id            String    @id @default(cuid())
+  workoutId     String
+  exerciseName  String?
+  reps          Int?
+  sets          Int?
+  weightLifted  Int?
+  workout       Workout   @relation(fields: [workoutId], references: [id])
+
+  @@index([workoutId])
 }
