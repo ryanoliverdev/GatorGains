@@ -17,7 +17,7 @@ export default function Footer() {
               GatorGains
             </h1>
           </Link>
-          <ul className="mb-6 md:w-auto grid grid-cols-4 gap-x-8 lg:gap-x-48 gap-y-2 items-center sm:mb-0">
+          <ul className="mb-0 md:w-auto grid grid-cols-4 gap-x-4 md:gap-x-48 gap-y-2 items-center">
             {footerLinks.map((link) => (
               <li key={link.route}>
                 <Link href={link.path}                   className={cn(
@@ -32,8 +32,8 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-        <hr className="my-6 text-muted-foreground sm:mx-auto lg:my-8" />
-        <span className="block text-sm text-muted-foreground sm:text-center">
+        <hr className="my-6 text-muted-foreground mx-auto " />
+        <span className="block text-sm text-muted-foreground text-center">
           © {new Date().getFullYear()}{" "}
           <a
             target="_blank"
