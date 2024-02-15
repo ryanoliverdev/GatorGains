@@ -40,38 +40,42 @@ export default async function IndLeaderBoard() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="">Rank</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead className="text-right">Score1</TableHead>
-              <TableHead className="text-right">Score2</TableHead>
+              <TableHead className="md:text-lg text-base w-[10px]">Rank</TableHead>
+              <TableHead className="md:text-lg text-base text-left">User</TableHead>
+              <TableHead className="md:text-lg text-base text-right">Score1</TableHead>
+              <TableHead className="md:text-lg text-base text-right">Score2</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {topUsers.map((topUser, i) => (
               <TableRow key={topUser.id}>
                 {i < 3 ? (
-                  <TableCell className=" font-bold text-yellow-400">
+                  <TableCell className="text-base md:text-lg font-bold text-yellow-400">
                     #{++i}
                   </TableCell>
                 ) : (
-                  <TableCell className=" font-bold">#{++i}</TableCell>
+                  <TableCell className="text-base md:text-lg font-bold">#{++i}</TableCell>
                 )}
                 <TableCell className="flex items-center space-x-2">
                   {topUser.image === null ? (
                     <Avatar className="md:ml-3 shadow-md h-6 w-6">
                       <AvatarImage alt="profileImage" />
-                      <AvatarFallback>{topUser.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      <AvatarFallback>
+                        {topUser.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                   ) : (
                     <Avatar className="md:ml-3 shadow-md h-6 w-6">
                       <AvatarImage src={topUser.image} alt="profileImage" />
-                      <AvatarFallback>{topUser.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      <AvatarFallback>
+                        {topUser.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                   )}
-                  <p className="">{topUser.name}</p>
+                  <p className="text-base md:text-lg">{topUser.name}</p>
                 </TableCell>
-                <TableCell className="text-right text">123</TableCell>
-                <TableCell className="text-right">580</TableCell>
+                <TableCell className="md:text-lg text-base text-right">123</TableCell>
+                <TableCell className="md:text-lg text-base text-right">580</TableCell>
               </TableRow>
             ))}
           </TableBody>
