@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import image from '@/assets/liftingpic.jpg';
+import image from '@/assets/gatorgainslogo.png';
 
 export default function HeroHeader() {
   return (

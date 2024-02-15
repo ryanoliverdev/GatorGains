@@ -27,6 +27,15 @@ export function MainNav({ options }: { options: any }) {
             Groups
           </Link>
           <Link
+            href="/leaderboards/individual"
+            className={cn(
+              'transition-colors hover:text-foreground/80',
+              pathname === '/docs' ? 'text-foreground' : 'text-foreground/60'
+            )}
+          >
+            Leaderboards
+          </Link>
+          <Link
             href="/"
             className={cn(
               'transition-colors hover:text-foreground/80',
@@ -86,7 +95,25 @@ export function MainNav({ options }: { options: any }) {
               pathname === '/docs' ? 'text-foreground' : 'text-foreground/60'
             )}
           >
+            Dashboard
+          </Link>
+          <Link
+            href="/"
+            className={cn(
+              'transition-colors hover:text-foreground/80',
+              pathname === '/docs' ? 'text-foreground' : 'text-foreground/60'
+            )}
+          >
             Groups
+          </Link>
+          <Link
+            href="/leaderboards/individual"
+            className={cn(
+              'transition-colors hover:text-foreground/80',
+              pathname === '/docs' ? 'text-foreground' : 'text-foreground/60'
+            )}
+          >
+            Leaderboards
           </Link>
           <Link
             href="/"
