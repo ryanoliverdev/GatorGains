@@ -67,16 +67,10 @@ export function MobileNav({ options }: { options: any }) {
               <span className="font-bold">GatorGains</span>
             </Link>
           </MobileLink>
-          <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+          <ScrollArea className="my-6 h-[75%] pb-10 pl-6">
             <div className="flex flex-col space-y-3">
               <MobileLink href="/" onOpenChange={setOpen}>
                 Home
-              </MobileLink>
-              <MobileLink href="/login" onOpenChange={setOpen}>
-                Login
-              </MobileLink>
-              <MobileLink href="/register" onOpenChange={setOpen}>
-                Sign Up
               </MobileLink>
               <MobileLink
                 href="/leaderboards/individual"
@@ -86,6 +80,18 @@ export function MobileNav({ options }: { options: any }) {
               </MobileLink>
             </div>
           </ScrollArea>
+          <div className="flex flex-col justify-end space-y-3 w-11/12">
+            <Button asChild variant="secondary">
+              <MobileLink onOpenChange={setOpen} href="/login">
+                Sign In
+              </MobileLink>
+            </Button>
+            <Button asChild>
+              <MobileLink onOpenChange={setOpen} href="/register">
+                Start Today
+              </MobileLink>
+            </Button>
+          </div>
         </SheetContent>
       </Sheet>
     );
@@ -167,7 +173,11 @@ export function MobileNav({ options }: { options: any }) {
               <MobileLink href="/" onOpenChange={setOpen}>
                 Diet
               </MobileLink>
-              <MobileLink className="font-bold" href="/" onClick={() => signOut()}>
+              <MobileLink
+                className="font-bold"
+                href="/"
+                onClick={() => signOut()}
+              >
                 Sign Out
               </MobileLink>
             </div>
