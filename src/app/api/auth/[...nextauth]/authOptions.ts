@@ -1,14 +1,14 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaAdapter} from '@next-auth/prisma-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 import { compare } from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: "/login"
+    signIn: '/login'
   },
   session: {
     strategy: 'jwt',
@@ -33,7 +33,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
-        console.log('in authorize');
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
@@ -55,12 +54,12 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl) && !url.includes("/dashboard")) {
+      if (url.startsWith(baseUrl) && !url.includes('/dashboard')) {
         return `${baseUrl}/dashboard`;
       }
       return url.startsWith(baseUrl) ? url : baseUrl;
-    },
+    }
   },
-  
+
   secret: process.env.NEXTAUTH_SECRET
 };

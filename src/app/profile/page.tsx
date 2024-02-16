@@ -1,10 +1,13 @@
 import { Separator } from '@/components/ui/separator';
 import { ProfileForm } from './profile-form';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+  const session = await getServerSession(authOptions);
   return (
     <div className="space-y-6">
-      <ProfileForm />
+      <ProfileForm email={session?.user?.email || ''} />
     </div>
   );
 }

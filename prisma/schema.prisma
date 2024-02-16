@@ -45,14 +45,33 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  bio           String?
+  streak        Int       @default(0)
+  workouts      Workout[]
   accounts      Account[]
   sessions      Session[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+model Workout {
+  id            String    @id @default(cuid())
+  userId        String
+  workoutDate   DateTime
+  workoutType   String?
+  duration      Int?
+  user          User      @relation(fields: [userId], references: [id])
+  stats         Stat[]
+  caloriesBurned Int?
+  @@index([userId])
+}
 
-  @@unique([identifier, token])
+model Stat {
+  id            String    @id @default(cuid())
+  workoutId     String
+  exerciseName  String?
+  reps          Int?
+  sets          Int?
+  weightLifted  Int?
+  workout       Workout   @relation(fields: [workoutId], references: [id])
+
+  @@index([workoutId])
 }

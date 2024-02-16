@@ -11,14 +11,14 @@ export async function POST(req: Request) {
     };
 
     const existingUser = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: email.toLowerCase() }
     });
 
     if (existingUser) {
       return new Response(
         JSON.stringify({
           status: 'error',
-          message: 'User already exists',
+          message: 'User already exists'
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
@@ -40,8 +40,8 @@ export async function POST(req: Request) {
         message: 'User registered successfully.',
         user: {
           name: user.name,
-          email: user.email,
-        },
+          email: user.email
+        }
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     return new NextResponse(
       JSON.stringify({
         status: 'error',
-        message: error.message,
+        message: error.message
       }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );

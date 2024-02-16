@@ -1,4 +1,4 @@
-"use server"
+'use server';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -7,14 +7,13 @@ import { MainNav } from '@/components/navbar/main-nav';
 import { MobileNav } from '@/components/navbar/mobile-nav';
 import { buttonVariants } from '@/components/ui/button';
 import { AvatarMenu } from './avatarMenu';
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 
 export async function SiteHeader() {
+  const session = await getServerSession(authOptions);
 
-  const session = await getServerSession(authOptions)
-
-  console.log(session)
+  console.log(session);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -26,7 +25,7 @@ export async function SiteHeader() {
             <span className="font-bold">GatorGains</span>
           </Link>
         </div>
-        <AvatarMenu options={session}/>
+        <AvatarMenu options={session} />
       </div>
     </header>
   );

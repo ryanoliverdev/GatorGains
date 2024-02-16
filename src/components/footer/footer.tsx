@@ -20,12 +20,15 @@ export default function Footer() {
           <ul className="mb-0 md:w-auto grid grid-cols-4 gap-x-4 md:gap-x-48 gap-y-2 items-center">
             {footerLinks.map((link) => (
               <li key={link.route}>
-                <Link href={link.path}                   className={cn(
+                <Link
+                  href={link.path}
+                  className={cn(
                     'mr-4 transition-colors hover:text-foreground/80 hover:underline md:mr-6',
                     pathname === link.path
                       ? 'text-foreground'
                       : 'text-foreground/60'
-                  )}>
+                  )}
+                >
                   {link.route}
                 </Link>
               </li>
@@ -34,20 +37,15 @@ export default function Footer() {
         </div>
         <hr className="my-6 text-muted-foreground mx-auto " />
         <span className="block text-sm text-muted-foreground text-center">
-          © {new Date().getFullYear()}{" "}
-          <a
-            target="_blank"
-            href="/"
-            className="hover:underline"
-          >
+          © {new Date().getFullYear()}{' '}
+          <a target="_blank" href="/" className="hover:underline">
             Gator Gains
           </a>
           . All Rights Reserved.
         </span>
       </footer>
     </div>
-
-  )
+  );
 }
 
 export const footerLinks = [
