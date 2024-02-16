@@ -67,7 +67,7 @@ export function MobileNav({ options }: { options: any }) {
               <span className="font-bold">GatorGains</span>
             </Link>
           </MobileLink>
-          <ScrollArea className="my-6 h-[75%] pb-10 pl-6">
+          <ScrollArea className="my-6 h-[70%] pb-10 pl-6">
             <div className="flex flex-col space-y-3">
               <MobileLink href="/" onOpenChange={setOpen}>
                 Home
