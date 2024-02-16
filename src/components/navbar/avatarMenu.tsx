@@ -27,7 +27,7 @@ export function AvatarMenu({ options }: { options: any }) {
         <DropdownMenuTrigger asChild>
           <Avatar className="md:ml-3 shadow-md cursor-pointer">
             <AvatarImage src={options.user.image} alt="@shadcn" />
-            <AvatarFallback>GG</AvatarFallback>
+            <AvatarFallback>{options.user.name.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">

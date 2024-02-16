@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'GatorGains',
-  description: 'Modern Fitness and Nutrition Tracker'
+  description: 'Modern Fitness and Nutrition Tracker',
 };
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen relative pb-20">
+      <body className= "flex flex-col min-h-screen relative">
         <SiteHeader></SiteHeader>
         <Providers>{children}</Providers>
         <Toaster />

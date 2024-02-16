@@ -8,7 +8,8 @@ export default function Footer() {
   const pathname = usePathname();
 
   return (
-    <div className="mt-auto">
+
+    <div className="mt-auto bg-gray-100">
       <footer className=" w-full mx-auto max-w-screen-xl p-6 md:py-8">
         <div className="flex flex-col lg:flex-row mx-auto items-center justify-between">
           <Link href="/">

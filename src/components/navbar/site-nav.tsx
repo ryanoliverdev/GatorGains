@@ -19,7 +19,7 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <MainNav options={session} />
-        <MobileNav />
+        <MobileNav options={session} />
         <div className="flex flex-1 items-center justify-center md:justify-end">
           <Link href="/" className="md:hidden font-bold">
             <span className="font-bold">GatorGains</span>
