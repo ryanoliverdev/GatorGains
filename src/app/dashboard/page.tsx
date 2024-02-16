@@ -1,20 +1,15 @@
-"use server"
-import { useSession, signOut } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { DashboardFinal } from "@/components/features/dashboard/page";
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
-
+'use server';
+import { useSession, signOut } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { DashboardFinal } from '@/components/features/dashboard/page';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 
 export default async function Dashboard() {
-  
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   // If there's a session (user is logged in), render the dashboard
- 
-    return (
-      <DashboardFinal options={session}></DashboardFinal>
-    );
-  
+
+  return <DashboardFinal options={session}></DashboardFinal>;
 }

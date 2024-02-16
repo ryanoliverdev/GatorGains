@@ -19,7 +19,12 @@ export default function HeroHeader() {
                 all-in-one fitness application Gator Gains.
               </h2>
             </div>
-            <Image src={image} width={300} className="rounded-full shadow-2xl" alt={''} />
+            <Image
+              src={image}
+              width={300}
+              className="rounded-full shadow-2xl"
+              alt={''}
+            />
             <Link
               href="/register"
               className={`w-[10rem] ${cn(buttonVariants({ size: 'lg', variant: 'secondary' }))}`}

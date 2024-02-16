@@ -70,9 +70,7 @@ export function MainNav({ options }: { options: any }) {
         </div>
       </div>
     );
-  }
-  else if(options.user !== null)
-  {
+  } else if (options.user !== null) {
     return (
       <div className="hidden md:flex w-full justify-between">
         <nav className="flex items-center gap-6 text-sm">

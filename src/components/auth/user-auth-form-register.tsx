@@ -44,7 +44,7 @@ const formSchema = z
     }),
     confirmPassword: z.string().min(1, {
       message: 'You need to confirm your password.'
-    }),
+    })
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -69,7 +69,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       lastname: '',
       email: '',
       password: '',
-      confirmPassword: '',
+      confirmPassword: ''
     }
   });
 
@@ -84,26 +84,27 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         }
       });
       if (res.status == 200) {
-        signIn('credentials', { 
+        signIn('credentials', {
           email: values.email,
           password: values.password,
           redirect: true,
-          callbackUrl: `${window.location.origin}/dashboard` });
+          callbackUrl: `${window.location.origin}/dashboard`
+        });
       } else if (res.status == 400) {
         toast.toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "A user with that email already exists",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: 'A user with that email already exists',
+          action: <ToastAction altText="Try again">Try again</ToastAction>
         });
       }
       setIsLoading(false);
     } catch (error: any) {
       toast.toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        action: <ToastAction altText="Try again">Try again</ToastAction>
       });
       console.log(error.message);
     }
@@ -183,7 +184,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   )}
                 />
               </div>
-              
+
               <FormField
                 control={form.control}
                 name="password"

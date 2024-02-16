@@ -50,11 +50,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const password = values.password;
 
     try {
-      signIn('credentials', { 
-        email, 
-        password, 
+      signIn('credentials', {
+        email,
+        password,
         redirect: true,
-        callbackUrl: `${window.location.origin}/dashboard` });
+        callbackUrl: `${window.location.origin}/dashboard`
+      });
     } catch (error: any) {
       console.log(error.message);
     }

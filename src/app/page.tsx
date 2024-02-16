@@ -12,10 +12,9 @@ import FeatureCards from '@/components/home/feature-card';
 export default function Home() {
   return (
     <>
-    <HeroHeader />
-    <FeatureCards/>
-    <Features/>
+      <HeroHeader />
+      <FeatureCards />
+      <Features />
     </>
-
-  )
+  );
 }
