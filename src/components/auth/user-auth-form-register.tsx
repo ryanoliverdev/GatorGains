@@ -76,7 +76,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   // THIS IS WHERE YOU WILL IMPLEMENT REGISTER TO NEXTAUTH
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await fetch('/api/register', {
+      const res = await fetch('/api/user', {
         method: 'POST',
         body: JSON.stringify(values),
         headers: {
