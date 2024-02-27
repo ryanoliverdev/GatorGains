@@ -90,10 +90,10 @@ export function MainNav({ options }: { options: any }) {
             <span className="hidden font-bold sm:inline-block">GatorGains</span>
           </Link>
           <Link
-            href="/"
+            href="/dashboard"
             className={cn(
               'transition-colors hover:text-foreground/80',
-              pathname === '/docs' ? 'text-foreground' : 'text-foreground/60'
+              pathname === '/dashboard' ? 'text-foreground' : 'text-foreground/60'
             )}
           >
             Dashboard
