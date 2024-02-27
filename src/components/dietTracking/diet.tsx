@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { getFoodItems } from '@/client/nutrition';
+import { getFoodItems, getBrandedNutrition, getCommonNutrition } from '@/client/nutrition';
 import {
   Command,
   CommandEmpty,
@@ -47,11 +47,44 @@ interface FoodItem {
 interface BrandedFoodItem extends FoodItem {
   brand_name: string;
   nf_calories: number;
+  item_id: string;
 }
 
 interface FoodItemsResult {
   commonFoods: FoodItem[];
   brandedFoods: BrandedFoodItem[];
+}
+
+// const logCommonFood = async (foodName: string, serving: number | undefined) => {
+//   const macros = await getCommonNutrition({ foodName, serving });
+//   const response = await fetch(`/api/foodLog/${userId}`, {
+//     method: 'POST',
+//     headers: {
+//     'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       macros
+//     }),
+//   });
+//   return response;
+// }
+
+const logBrandedFood = async (item_id: string, serving: number | undefined) => {
+  try {
+    const macros = await getBrandedNutrition({ item_id, serving });
+    const response = await fetch(`/api/foodLog/${userId}`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        macros
+      }),
+  });
+  return response;
+  } catch (error: any) {
+    console.error(error.message);
+  }
 }
 
 const DietComponent = () => {
@@ -142,7 +175,7 @@ const DietComponent = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button size="icon">
+                      <Button size="icon" onClick={() => logBrandedFood(food.item_id, food.serving_qty)}>
                         <Plus className="h-4 w-4" />
                       </Button>
                     </TableCell>

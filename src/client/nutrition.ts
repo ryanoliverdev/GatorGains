@@ -61,6 +61,7 @@ export const getBrandedNutrition = async (
   }
 });
   return {
+    food_name: response.data.foods[0].food_name,
     calories: response.data.foods[0].nf_calories,
     fat: response.data.foods[0].nf_total_fat,
     carbs: response.data.foods[0].nf_total_carbohydrate,
@@ -86,6 +87,7 @@ export const getCommonNutrition = async (
     }
   );
   return {
+    food_name: response.data.foods[0].food_name,
     calories: response.data.foods[0].nf_calories,
     fat: response.data.foods[0].nf_total_fat,
     carbs: response.data.foods[0].nf_total_carbohydrate,
