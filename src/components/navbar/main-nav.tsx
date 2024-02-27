@@ -139,7 +139,7 @@ export function MainNav({ options }: { options: any }) {
             Tracking
           </Link>
           <Link
-            href="/"
+            href="/diet"
             className={cn(
               'transition-colors hover:text-foreground/80',
               pathname?.startsWith('/examples')

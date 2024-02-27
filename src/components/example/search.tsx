@@ -24,6 +24,7 @@ import {
 } from '../ui/table';
 import Image from 'next/image';
 import { Card } from '../ui/card';
+import LogDailyFood from './logDailyFood';
 
 interface FoodItem {
   food_name: string;
