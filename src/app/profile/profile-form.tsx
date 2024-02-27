@@ -82,8 +82,8 @@ export function ProfileForm({ email }: SessionProps) {
   async function onSubmit(data: ProfileFormValues) {
     const { bio } = data;
     console.log({ email, bio });
-    const res = await fetch('/api/update', {
-      method: 'POST',
+    const res = await fetch('/api/user', {
+      method: 'PUT',
       body: JSON.stringify({ email, bio }),
       headers: {
         'Content-Type': 'application/json'
