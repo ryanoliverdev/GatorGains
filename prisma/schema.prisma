@@ -3,24 +3,24 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -39,39 +39,74 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
-  email         String?   @unique
+  email         String?        @unique
   password      String?
   emailVerified DateTime?
   image         String?
   bio           String?
-  streak        Int       @default(0)
+  streak        Int            @default(0)
   workouts      Workout[]
   accounts      Account[]
   sessions      Session[]
+  dailyFoodLogs DailyFoodLog[]
 }
 
 model Workout {
-  id            String    @id @default(cuid())
-  userId        String
-  workoutDate   DateTime
-  workoutType   String?
-  duration      Int?
-  user          User      @relation(fields: [userId], references: [id])
-  stats         Stat[]
+  id             String   @id @default(cuid())
+  userId         String
+  workoutDate    DateTime
+  workoutType    String?
+  duration       Int?
+  user           User     @relation(fields: [userId], references: [id])
+  stats          Stat[]
   caloriesBurned Int?
+
   @@index([userId])
 }
 
 model Stat {
-  id            String    @id @default(cuid())
-  workoutId     String
-  exerciseName  String?
-  reps          Int?
-  sets          Int?
-  weightLifted  Int?
-  workout       Workout   @relation(fields: [workoutId], references: [id])
+  id           String  @id @default(cuid())
+  workoutId    String
+  exerciseName String?
+  reps         Int?
+  sets         Int?
+  weightLifted Int?
+  workout      Workout @relation(fields: [workoutId], references: [id])
 
   @@index([workoutId])
+}
+
+model DailyFoodLog {
+  id        String      @id @default(cuid())
+  userId    String
+  date      String    @unique
+  user      User        @relation(fields: [userId], references: [id])
+  FoodEntry FoodEntry[]
+
+  @@index([userId])
+}
+
+model FoodItem {
+  id             String       @id @default(cuid())
+  foodName       String       @unique
+  calories       Int
+  protein        Int
+  carbs          Int
+  fat            Int
+  foodEntries    FoodEntry[]
+
+  @@index([foodName])
+}
+
+model FoodEntry {
+  id             String       @id @default(cuid())
+  dailyFoodLogId String
+  foodItemId     String
+  dailyFoodLog   DailyFoodLog @relation(fields: [dailyFoodLogId], references: [id])
+  foodItem       FoodItem     @relation(fields: [foodItemId], references: [id])
+
+  @@index([dailyFoodLogId])
+  @@index([foodItemId])
 }
