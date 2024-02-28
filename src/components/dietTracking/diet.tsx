@@ -36,6 +36,7 @@ import {
 import { Button } from '../ui/button';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { Plus } from 'lucide-react';
+import DietDrawer from './dietDrawer';
 
 interface FoodItem {
   food_name: string;
@@ -142,9 +143,7 @@ const DietComponent = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button size="icon">
-                        <Plus className="h-4 w-4" />
-                      </Button>
+                      <DietDrawer servingSize={food.serving_qty} calories={food.nf_calories}></DietDrawer>
                     </TableCell>
                   </TableRow>
                 ))}
