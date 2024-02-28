@@ -170,7 +170,7 @@ export function MobileNav({ options }: { options: any }) {
               <MobileLink href="/" onOpenChange={setOpen}>
                 Tracking
               </MobileLink>
-              <MobileLink href="/" onOpenChange={setOpen}>
+              <MobileLink href="/diet" onOpenChange={setOpen}>
                 Diet
               </MobileLink>
               <MobileLink

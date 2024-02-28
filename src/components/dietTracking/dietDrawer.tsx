@@ -11,49 +11,6 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer';
-import { number } from 'zod';
-
-const data = [
-  {
-    goal: 400
-  },
-  {
-    goal: 300
-  },
-  {
-    goal: 200
-  },
-  {
-    goal: 300
-  },
-  {
-    goal: 200
-  },
-  {
-    goal: 278
-  },
-  {
-    goal: 189
-  },
-  {
-    goal: 239
-  },
-  {
-    goal: 300
-  },
-  {
-    goal: 200
-  },
-  {
-    goal: 278
-  },
-  {
-    goal: 189
-  },
-  {
-    goal: 349
-  }
-];
 
 export default function DietDrawer({
   servingSize,
@@ -62,20 +19,34 @@ export default function DietDrawer({
   servingSize: number;
   calories: number;
 }) {
-  const [modifiedCals, setCalories] = React.useState(calories);
-  const [modifiedServingSize, setServingSize] = React.useState(servingSize);
+
+  const [modifiedCals, setCalories] = React.useState(0);
+  const [modifiedServingSize, setServingSize] = React.useState(0);
+  const [customCals, setCustomCals] = React.useState(0);
 
   function onClick(adjustment: number) {
-    setServingSize(adjustment + modifiedServingSize);
 
-    if (adjustment > 0) setCalories(calories * (modifiedServingSize + 1));
-    else setCalories(calories * (modifiedServingSize - 1));
+    const newVal = adjustment + modifiedServingSize;
+    setServingSize(newVal);
+    setCalories(customCals * newVal)
   }
+
+  React.useEffect(() => {
+    setCalories(Math.ceil(calories));
+    setServingSize(servingSize);
+    setCustomCals(Math.ceil(calories));
+
+    if (servingSize !== 1) {
+      setCustomCals(Math.ceil(calories / servingSize));
+      setCalories(Math.ceil(calories / servingSize));
+      setServingSize(1);
+    }
+  }, [servingSize]);
 
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline">Open Drawer</Button>
+        <Button size={"icon"}><Plus className="h-4 w-4"/></Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
@@ -123,9 +94,9 @@ export default function DietDrawer({
                 <span className="sr-only">Increase</span>
               </Button>
             </div>
-            <div className="mt-3 h-[120px]">
-              <div className="text-[0.70rem] uppercase text-muted-foreground">
-                {calories} calories per {servingSize} serving(s)
+            <div className="mt-6 h-[25px]">
+              <div className="text-[0.70rem] text-center uppercase text-muted-foreground">
+                {customCals} calories per 1 serving(s)
               </div>
             </div>
           </div>

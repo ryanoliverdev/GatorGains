@@ -86,7 +86,7 @@ const DietComponent = () => {
   return (
     <div>
       <div>
-        <Card className="p-5 mt-6">
+        <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Input
@@ -116,10 +116,10 @@ const DietComponent = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">Food</TableHead>
+                <TableHead className="w-[250px]">Food</TableHead>
                 <TableHead>Brand</TableHead>
-                <TableHead>Serving Size</TableHead>
-                <TableHead>Calories</TableHead>
+                <TableHead></TableHead>
+
               </TableRow>
             </TableHeader>
             {foodType === 'branded' && (
@@ -132,18 +132,27 @@ const DietComponent = () => {
                         alt={food.food_name}
                         className="object-contain w-10"
                       />
-                      {food.food_name}
+                      <p>{food.food_name}</p>
+                      <p className="text-green-600">
+                        {food.nf_calories % 1 > 0
+                          ? food.nf_calories.toFixed(2)
+                          : food.nf_calories}{' '}
+                        Cals
+                      </p>
+                      <p className="text-green-800">
+                        {food.serving_qty % 1 > 0
+                          ? food.serving_qty.toFixed(2)
+                          : food.serving_qty}{' '}
+                        {food.serving_unit}
+                      </p>
                     </TableCell>
                     <TableCell>{food.brand_name}</TableCell>
 
-                    <TableCell>{food.serving_qty}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-4">
-                        {food.nf_calories}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DietDrawer servingSize={food.serving_qty} calories={food.nf_calories}></DietDrawer>
+                    <TableCell className="text-end">
+                      <DietDrawer
+                        servingSize={food.serving_qty}
+                        calories={food.nf_calories}
+                      ></DietDrawer>
                     </TableCell>
                   </TableRow>
                 ))}
