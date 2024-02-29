@@ -31,3 +31,4 @@ export const getNutrition = async (
     caloriesBurned: response.data.exercises[0].nf_calories
   };
 };
+
