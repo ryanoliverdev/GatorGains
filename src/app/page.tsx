@@ -9,7 +9,9 @@ import {
 } from '@/components/ui/carousel';
 import Features from '@/components/home/features';
 import FeatureCards from '@/components/home/feature-card';
+
 export default function Home() {
+
   return (
     <>
       <HeroHeader />
