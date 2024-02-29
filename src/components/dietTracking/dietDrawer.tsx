@@ -14,21 +14,23 @@ import {
 
 export default function DietDrawer({
   servingSize,
-  calories
+  calories,
+  servingUnit,
+  foodName
 }: {
   servingSize: number;
   calories: number;
+  servingUnit: string;
+  foodName: string;
 }) {
-
   const [modifiedCals, setCalories] = React.useState(0);
   const [modifiedServingSize, setServingSize] = React.useState(0);
   const [customCals, setCustomCals] = React.useState(0);
 
   function onClick(adjustment: number) {
-
     const newVal = adjustment + modifiedServingSize;
     setServingSize(newVal);
-    setCalories(customCals * newVal)
+    setCalories(customCals * newVal);
   }
 
   React.useEffect(() => {
@@ -46,14 +48,16 @@ export default function DietDrawer({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button size={"icon"}><Plus className="h-4 w-4"/></Button>
+        <Button size={'icon'}>
+          <Plus className="h-4 w-4" />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle>Total Calories</DrawerTitle>
             <DrawerDescription>
-              Add item to diet tracking list.
+              Add {foodName} to diet tracking list.
             </DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0">
@@ -96,7 +100,7 @@ export default function DietDrawer({
             </div>
             <div className="mt-6 h-[25px]">
               <div className="text-[0.70rem] text-center uppercase text-muted-foreground">
-                {customCals} calories per 1 serving(s)
+                {customCals} calories per 1 {servingUnit}
               </div>
             </div>
           </div>
