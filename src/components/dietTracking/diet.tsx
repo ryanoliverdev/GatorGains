@@ -70,23 +70,23 @@ interface FoodItemsResult {
 //   return response;
 // }
 
-const logBrandedFood = async (item_id: string, serving: number | undefined) => {
-  try {
-    const macros = await getBrandedNutrition({ item_id, serving });
-    const response = await fetch(`/api/foodLog/${userId}`, {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        macros
-      }),
-  });
-  return response;
-  } catch (error: any) {
-    console.error(error.message);
-  }
-}
+// const logBrandedFood = async (item_id: string, serving: number | undefined) => {
+//   try {
+//     const macros = await getBrandedNutrition({ item_id, serving });
+//     const response = await fetch(`/api/foodLog/${userId}`, {
+//       method: 'POST',
+//       headers: {
+//       'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         macros
+//       }),
+//   });
+//   return response;
+//   } catch (error: any) {
+//     console.error(error.message);
+//   }
+// }
 
 const DietComponent = () => {
   const [query, setQuery] = useState('');
