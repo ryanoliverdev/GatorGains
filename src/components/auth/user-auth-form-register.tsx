@@ -35,6 +35,9 @@ const formSchema = z
     lastname: z.string().min(1, {
       message: 'You need to enter a last name.'
     }),
+    username: z.string().min(5, {
+      message: 'You need to enter a username over 5 characters.'
+    }),
     email: z
       .string()
       .min(1, { message: 'This field has to be filled.' })
@@ -65,6 +68,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: '',
       firstname: '',
       lastname: '',
       email: '',
@@ -138,6 +142,27 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-base">Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="mb-3"
+                        id="username"
+                        type="username"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="flex gap-4">
                 <FormField
                   control={form.control}
@@ -151,7 +176,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                           id="firstname"
                           type="name"
                           autoCapitalize="none"
-                          autoComplete="email"
                           autoCorrect="off"
                           disabled={isLoading}
                           {...field}
@@ -173,7 +197,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                           id="lastname"
                           type="name"
                           autoCapitalize="none"
-                          autoComplete="email"
                           autoCorrect="off"
                           disabled={isLoading}
                           {...field}

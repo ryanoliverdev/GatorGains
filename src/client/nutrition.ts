@@ -27,14 +27,14 @@ export const getFoodItems = async (
     }
   );
 
-  const commonFoods = response.data.common.slice(0, 5).map((item: { food_name: string; serving_unit: string; serving_qty: number; photo: { thumb: any; }; }) => ({
+  const commonFoods = response.data.common.slice(0, 10).map((item: { food_name: string; serving_unit: string; serving_qty: number; photo: { thumb: any; }; }) => ({
     food_name: item.food_name,
     serving_unit: item.serving_unit,
     serving_qty: item.serving_qty,
     photo: item.photo.thumb,
   }));
 
-  const brandedFoods = response.data.branded.slice(0, 5).map((item: { food_name: string; serving_unit: string; serving_qty: number; brand_name: string; nf_calories: number; photo: { thumb: any; }; nix_item_id: string }) => ({
+  const brandedFoods = response.data.branded.slice(0, 10).map((item: { food_name: string; serving_unit: string; serving_qty: number; brand_name: string; nf_calories: number; photo: { thumb: any; }; nix_item_id: string; }) => ({
     food_name: item.food_name,
     serving_unit: item.serving_unit,
     serving_qty: item.serving_qty,
