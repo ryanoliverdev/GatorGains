@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id.toString(),
+          id: user.id,
           email: user.email,
           name: user.name,
           picture: user.image
@@ -58,6 +58,19 @@ export const authOptions: NextAuthOptions = {
         return `${baseUrl}/dashboard`;
       }
       return url.startsWith(baseUrl) ? url : baseUrl;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+          token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      if (session.user) {
+          session.user.id = token.id as string;
+      }
+      if (token?.sub) session.user.id = token.sub;
+      return session;
     }
   },
 
