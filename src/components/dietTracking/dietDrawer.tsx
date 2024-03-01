@@ -13,16 +13,45 @@ import {
 } from '@/components/ui/drawer';
 
 export default function DietDrawer({
+  options,
   servingSize,
   calories,
   servingUnit,
   foodName
 }: {
+  options: any;
   servingSize: number;
   calories: number;
   servingUnit: string;
   foodName: string;
 }) {
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(options)
+    try {
+    const response = await fetch(`/api/foodLog/${options.user.id}`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+        foodName: foodName,
+        calories: modifiedCals,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
+        }),
+    });
+
+
+
+    const data = await response.json();
+    } catch (error: any) {
+        console.error(error.message);
+    }
+};
+
   const [modifiedCals, setCalories] = React.useState(0);
   const [modifiedServingSize, setServingSize] = React.useState(0);
   const [customCals, setCustomCals] = React.useState(0);
@@ -105,7 +134,7 @@ export default function DietDrawer({
             </div>
           </div>
           <DrawerFooter>
-            <Button>Add Item</Button>
+            <Button onClick={handleSubmit}>Add Item</Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>

@@ -57,7 +57,8 @@ interface FoodItemsResult {
   brandedFoods: BrandedFoodItem[];
 }
 
-const DietComponent = () => {
+const DietComponent = ({options} : {options: any} ) => {
+  console.log(options)
   const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<FoodItemsResult>({
@@ -153,6 +154,7 @@ const DietComponent = () => {
 
                         <TableCell className="text-end">
                           <DietDrawer
+                            options={options}
                             servingUnit={food.serving_unit}
                             servingSize={food.serving_qty}
                             calories={food.nf_calories}
