@@ -128,7 +128,7 @@ const DietComponent = () => {
                 {foodType === 'branded' && (
                   <TableBody>
                     {results.brandedFoods.map((food) => (
-                      <TableRow key={food.food_name}>
+                      <TableRow key={food.food_name + food.brand_name}>
                         <TableCell className="font-medium">
                           <img
                             src={food.photo}
