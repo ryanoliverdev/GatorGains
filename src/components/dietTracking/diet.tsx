@@ -43,6 +43,7 @@ import { Plus } from 'lucide-react';
 import DietDrawer from './dietDrawer';
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { Icons } from '../ui/icons';
+import { Progress } from '../ui/progress';
 
 interface FoodItem {
   food_name: string;
@@ -109,6 +110,9 @@ const DietComponent = ({ options }: { options: any }) => {
   return (
     <div>
       <div>
+        <p>Calories 4 da day: </p>
+      <Progress value={33} />
+
         <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">
             <div className="grid w-full max-w-sm items-center gap-1.5">
