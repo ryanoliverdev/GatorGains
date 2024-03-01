@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { firstname, email, password } = (await req.json()) as {
+    const { firstname, email, username, password } = (await req.json()) as {
       firstname: string;
       email: string;
+      username: string;
       password: string;
     };
 
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
       data: {
         name: firstname,
         email: email.toLowerCase(),
+        username: username,
         password: hashed_password
       }
     });
@@ -40,7 +42,8 @@ export async function POST(req: Request) {
         message: 'User registered successfully.',
         user: {
           name: user.name,
-          email: user.email
+          email: user.email,
+          username: user.username
         }
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
