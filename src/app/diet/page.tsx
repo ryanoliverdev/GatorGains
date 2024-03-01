@@ -7,7 +7,6 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import MainDiet from '@/components/dietTracking/mainDiet';
 
 export default async function DietTracking() {
-  const session = await getServerSession(authOptions);
 
   return (
     <div className="container">

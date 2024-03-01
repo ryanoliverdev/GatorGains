@@ -1,6 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { getFoodItems, getBrandedNutrition, getCommonNutrition } from '@/client/nutrition';
+import {
+  getFoodItems,
+  getBrandedNutrition,
+  getCommonNutrition
+} from '@/client/nutrition';
 import {
   Command,
   CommandEmpty,
@@ -72,26 +76,7 @@ interface FoodItemsResult {
 //   return response;
 // }
 
-// const logBrandedFood = async (item_id: string, serving: number | undefined) => {
-//   try {
-//     const macros = await getBrandedNutrition({ item_id, serving });
-//     const response = await fetch(`/api/foodLog/${userId}`, {
-//       method: 'POST',
-//       headers: {
-//       'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         macros
-//       }),
-//   });
-//   return response;
-//   } catch (error: any) {
-//     console.error(error.message);
-//   }
-// }
-
-const DietComponent = ({options} : {options: any} ) => {
-  console.log(options)
+const DietComponent = ({ options }: { options: any }) => {
   const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<FoodItemsResult>({
@@ -99,6 +84,7 @@ const DietComponent = ({options} : {options: any} ) => {
     brandedFoods: []
   });
   const [foodType, setFoodType] = useState('branded');
+  console.log(options + " DIET COMPONENT")
 
   useEffect(() => {
     setLoading(true);
@@ -192,6 +178,7 @@ const DietComponent = ({options} : {options: any} ) => {
                             servingSize={food.serving_qty}
                             calories={food.nf_calories}
                             foodName={food.food_name}
+                            foodId={food.item_id}
                           ></DietDrawer>
                         </TableCell>
                       </TableRow>

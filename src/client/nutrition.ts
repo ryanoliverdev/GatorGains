@@ -52,7 +52,7 @@ export const getBrandedNutrition = async (
 ) => {
   const response = await axios.get('https://trackapi.nutritionix.com/v2/search/item', {
   params: {
-    upc: data.item_id
+    nix_item_id: data.item_id
   },
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,6 +60,7 @@ export const getBrandedNutrition = async (
     'x-app-key': process.env.nutritionixKey
   }
 });
+
   return {
     food_name: response.data.foods[0].food_name,
     calories: response.data.foods[0].nf_calories,
