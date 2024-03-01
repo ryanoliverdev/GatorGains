@@ -37,6 +37,8 @@ import { Button } from '../ui/button';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { Plus } from 'lucide-react';
 import DietDrawer from './dietDrawer';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
+import { Icons } from '../ui/icons';
 
 interface FoodItem {
   food_name: string;
@@ -56,6 +58,7 @@ interface FoodItemsResult {
 }
 
 const DietComponent = () => {
+  const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<FoodItemsResult>({
     commonFoods: [],
@@ -64,11 +67,13 @@ const DietComponent = () => {
   const [foodType, setFoodType] = useState('branded');
 
   useEffect(() => {
+    setLoading(true);
     const handler = setTimeout(() => {
       if (query.trim()) {
         getFoodItems(query)
           .then((data) => {
             setResults(data);
+            setLoading(false);
           })
           .catch(console.error);
       } else {
@@ -80,8 +85,6 @@ const DietComponent = () => {
       clearTimeout(handler);
     };
   }, [query]);
-
-  console.log(foodType);
 
   return (
     <div>
@@ -97,86 +100,89 @@ const DietComponent = () => {
                 placeholder="Food Search..."
               />
             </div>
-            <Select onValueChange={setFoodType}>
+            <Select defaultValue="branded" onValueChange={setFoodType}>
               <SelectTrigger className="md:w-[280px]">
-                <SelectValue
-                  defaultValue={'branded'}
-                  placeholder="Food Type..."
-                />
+                <SelectValue placeholder="Food Type..." />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Types</SelectLabel>
+                  <SelectLabel>Food Types</SelectLabel>
                   <SelectItem value="branded">Branded Food</SelectItem>
                   <SelectItem value="common">Common Food</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Food</TableHead>
-                <TableHead>Brand</TableHead>
-                <TableHead></TableHead>
-
-              </TableRow>
-            </TableHeader>
-            {foodType === 'branded' && (
-              <TableBody>
-                {results.brandedFoods.map((food, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">
-                      <img
-                        src={food.photo}
-                        alt={food.food_name}
-                        className="object-contain w-10"
-                      />
-                      <p>{food.food_name}</p>
-                      <p className="text-green-600">
-                        {food.nf_calories % 1 > 0
-                          ? food.nf_calories.toFixed(2)
-                          : food.nf_calories}{' '}
-                        Cals
-                      </p>
-                      <p className="text-green-800">
-                        {food.serving_qty % 1 > 0
-                          ? food.serving_qty.toFixed(2)
-                          : food.serving_qty}{' '}
-                        {food.serving_unit}
-                      </p>
-                    </TableCell>
-                    <TableCell>{food.brand_name}</TableCell>
-
-                    <TableCell className="text-end">
-                      <DietDrawer
-                        servingSize={food.serving_qty}
-                        calories={food.nf_calories}
-                      ></DietDrawer>
-                    </TableCell>
+          {query !== '' &&
+            (isLoading === true ? (
+              <Icons.spinner className="h-4 w-4 animate-spin" />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[250px]">Food</TableHead>
+                    <TableHead>Brand</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            )}
-            {foodType === 'common' && (
-              <TableBody>
-                {results.commonFoods.map((food, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">
-                      <img
-                        src={food.photo}
-                        alt={food.food_name}
-                        className="object-contain w-10"
-                      />
-                      {food.food_name}
-                    </TableCell>
-                    <TableCell>{food.serving_qty}</TableCell>
-                    <TableCell>{food.serving_unit}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            )}
-          </Table>
+                </TableHeader>
+                {foodType === 'branded' && (
+                  <TableBody>
+                    {results.brandedFoods.map((food) => (
+                      <TableRow key={food.food_name + food.brand_name}>
+                        <TableCell className="font-medium">
+                          <img
+                            src={food.photo}
+                            alt={food.food_name}
+                            className="object-contain w-10"
+                          />
+                          <p>{food.food_name}</p>
+                          <p className="text-green-600">
+                            {food.nf_calories % 1 > 0
+                              ? food.nf_calories.toFixed(2)
+                              : food.nf_calories}{' '}
+                            Cals
+                          </p>
+                          <p className="text-green-800">
+                            {food.serving_qty % 1 > 0
+                              ? food.serving_qty.toFixed(2)
+                              : food.serving_qty}{' '}
+                            {food.serving_unit}
+                          </p>
+                        </TableCell>
+                        <TableCell>{food.brand_name}</TableCell>
+
+                        <TableCell className="text-end">
+                          <DietDrawer
+                            servingUnit={food.serving_unit}
+                            servingSize={food.serving_qty}
+                            calories={food.nf_calories}
+                            foodName={food.food_name}
+                          ></DietDrawer>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                )}
+                {foodType === 'common' && (
+                  <TableBody>
+                    {results.commonFoods.map((food, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          <img
+                            src={food.photo}
+                            alt={food.food_name}
+                            className="object-contain w-10"
+                          />
+                          {food.food_name}
+                        </TableCell>
+                        <TableCell>{food.serving_qty}</TableCell>
+                        <TableCell>{food.serving_unit}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                )}
+              </Table>
+            ))}
         </Card>
       </div>
       {/* <input
