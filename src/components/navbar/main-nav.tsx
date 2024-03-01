@@ -117,7 +117,7 @@ export function MainNav({ options }: { options: any }) {
             Leaderboards
           </Link>
           <Link
-            href="/"
+            href="/exercises"
             className={cn(
               'transition-colors hover:text-foreground/80',
               pathname?.startsWith('/docs/components')
