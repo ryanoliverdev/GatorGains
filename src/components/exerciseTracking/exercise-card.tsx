@@ -47,8 +47,10 @@ import { z } from 'zod';
 import React, { useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import { ToastAction } from '@radix-ui/react-toast';
-import exerciseData from "@/components/exerciseTracking/workoutData";
-
+import workoutData from '@/components/exerciseTracking/workoutData';
+import exerciseData from '@/components/exerciseTracking/exerciseData';
+import { XIcon } from '@heroicons/react/outline';
+import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
 
 interface Exercise {
   exerciseName: string;
@@ -144,8 +146,13 @@ export default function ExerciseCard() {
             Create New Custom Exercise
           </AlertDialogTrigger>
           <AlertDialogContent>
-            <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
+            <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border">
               <div className="my-12">
+                <div className="flex items-center justify-end">
+                  <AlertDialogCancel>
+                    <XIcon className="w-4 h-4" />
+                  </AlertDialogCancel>
+                </div>
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmitCustom)}
@@ -300,9 +307,10 @@ export default function ExerciseCard() {
                         </FormItem>
                       )}
                     />
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
                     {form.formState.isValid && (
-                      <AlertDialogAction type="submit">Submit</AlertDialogAction>
+                      <AlertDialogAction type="submit">
+                        Submit
+                      </AlertDialogAction>
                     )}
                   </form>
                 </Form>
@@ -310,18 +318,17 @@ export default function ExerciseCard() {
             </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
-        <AlertDialog>
-          <AlertDialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 sm:mt-0 rounded-lg inline-block px-4 py-2">
-            Create New Automated Exercise
-          </AlertDialogTrigger>
-        </AlertDialog>
+        <AutomatedExercise>
+          
+        </AutomatedExercise>
+
       </div>
 
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
-          Your Exercises
-        </h1>
-      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        Your Exercises
+      </h1>
+      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border  mx-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {exerciseData.exercises.map((exercise, index) => (
             <Card key={index} className="font-light">
               <div className="p-8 font-light flex flex-col justify-between h-full">
@@ -345,170 +352,196 @@ export default function ExerciseCard() {
                     </AlertDialogTrigger>
 
                     <AlertDialogContent>
-                    <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
-              <div className="my-12">
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmitEdit)}
-                    className="space-y-1"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="exerciseName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Exercise Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Exercise Name" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            (your name for the exercise){' '}
-                            <span className="text-red-600">(required)</span>
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="difficulty"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Difficulty</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select exercise difficulty" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="beginner">beginner</SelectItem>
-                              <SelectItem value="intermediate">
-                                intermediate
-                              </SelectItem>
-                              <SelectItem value="expert">expert</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormDescription>
-                            (select the difficulty level of the exercise)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="type"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Exercise Type</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Exercise Type" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            (cardio, lifting, streching, abs, etc.)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="sets"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Sets</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Sets" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            (number of sets for the exercise)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="duration_reps"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Durations/Reps</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Duration/Reps" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            (duration or number of repetitions)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="muscle"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Muscle</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Muscle" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            {' '}
-                            (primary muscle targeted by the exercise)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="equipment"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Equipment</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Equipment" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            (equipment required for this exercise (e.g.,
-                            dumbbell, barbell, resistance band))
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Description"
-                              className="resize-none"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            (brief description of the exercise)
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    {form.formState.isValid && (
-                      <AlertDialogAction type="submit" >Submit</AlertDialogAction>
-                    )}
-                  </form>
-                </Form>
-              </div>
-            </ScrollArea>
+                      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
+                        <div className="my-12">
+                          <div className="flex items-center justify-end">
+                            <AlertDialogCancel>
+                              <XIcon className="w-4 h-4" />
+                            </AlertDialogCancel>
+                          </div>
+                          <Form {...form}>
+                            <form
+                              onSubmit={form.handleSubmit(onSubmitEdit)}
+                              className="space-y-1"
+                            >
+                              <FormField
+                                control={form.control}
+                                name="exerciseName"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Exercise Name</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="Exercise Name"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (your name for the exercise){' '}
+                                      <span className="text-red-600">
+                                        (required)
+                                      </span>
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="difficulty"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Difficulty</FormLabel>
+                                    <Select
+                                      onValueChange={field.onChange}
+                                      defaultValue={field.value}
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Select exercise difficulty" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        <SelectItem value="beginner">
+                                          beginner
+                                        </SelectItem>
+                                        <SelectItem value="intermediate">
+                                          intermediate
+                                        </SelectItem>
+                                        <SelectItem value="expert">
+                                          expert
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                      (select the difficulty level of the
+                                      exercise)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="type"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Exercise Type</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="Exercise Type"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (cardio, lifting, streching, abs, etc.)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="sets"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Sets</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Sets" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (number of sets for the exercise)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="duration_reps"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Durations/Reps</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="Duration/Reps"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (duration or number of repetitions)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="muscle"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Muscle</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Muscle" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                      {' '}
+                                      (primary muscle targeted by the exercise)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="equipment"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Equipment</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="Equipment"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (equipment required for this exercise
+                                      (e.g., dumbbell, barbell, resistance
+                                      band))
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Description"
+                                        className="resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormDescription>
+                                      (brief description of the exercise)
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              {form.formState.isValid && (
+                                <AlertDialogAction type="submit">
+                                  Submit
+                                </AlertDialogAction>
+                              )}
+                            </form>
+                          </Form>
+                        </div>
+                      </ScrollArea>
                     </AlertDialogContent>
                   </AlertDialog>
                   <AlertDialog>
