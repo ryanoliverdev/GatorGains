@@ -55,6 +55,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { Command } from 'cmdk';
 import Select from 'react-select';
 import AutomatedWorkout from '@/components/exerciseTracking/automatedWorkout';
+import { MultiValue, ActionMeta } from 'react-select';
 
 import ValueType from 'react-select';
 const formSchema = z.object({
@@ -108,6 +109,12 @@ export default function WorkoutCard() {
     name: string;
     exercises: Exercise[];
   }
+
+  interface SelectedOption {
+    value: string;
+    label: string;
+}
+
   const handleEditClick = (workout: Workout) => {
     form.reset({
       workoutName: workout.name
@@ -123,12 +130,18 @@ export default function WorkoutCard() {
     label: exercise.exerciseName
   }));
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<SelectedOption[]>([]);
   const [changesMade, setChangesMade] = useState(false);
+ 
 
-  const handleSelectChange = (selectedOptions) => {
-    setSelected(selectedOptions);
-    setChangesMade(true);
+  const handleSelectChange = (
+      newValue: MultiValue<{ value: string; label: string; }>,
+      actionMeta: ActionMeta<{ value: string; label: string; }>
+  ) => {
+      if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value') {
+          setSelected(newValue as SelectedOption[]);
+          setChangesMade(true);
+      }
   };
 
   return (
