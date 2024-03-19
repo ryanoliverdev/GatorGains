@@ -92,7 +92,14 @@ export async function GET(req: Request, { params }: { params: { userId: string }
         },
       },
     });
-    return result;
+    return new NextResponse(
+      JSON.stringify({
+        status: 'success',
+        message: 'Food log retrieved successfully.',
+        result
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error: any) {
     return new NextResponse(
       JSON.stringify({
