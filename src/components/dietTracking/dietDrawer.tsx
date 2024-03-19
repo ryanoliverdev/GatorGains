@@ -11,18 +11,75 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer';
+import { getBrandedNutrition } from '@/client/nutrition';
 
 export default function DietDrawer({
+  options,
   servingSize,
   calories,
   servingUnit,
-  foodName
+  foodName,
+  foodId
 }: {
+  options: any;
   servingSize: number;
   calories: number;
   servingUnit: string;
   foodName: string;
+  foodId: string;
 }) {
+
+  const logBrandedFood = async (
+    item_id: string,
+    serving: number | undefined
+  ) => {
+    try {
+      const macros = await getBrandedNutrition({ item_id, serving });
+      console.log(macros)
+      const response = await fetch(`/api/foodLog/${options.user.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          foodName: macros.food_name,
+          calories: macros.calories,
+          protein: macros.protein,
+          carbs: macros.carbs,
+          fat: macros.fat
+        })
+      });
+      return response;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     try {
+//     const response = await fetch(`/api/foodLog/${options.user.id}`, {
+//         method: 'POST',
+//         headers: {
+//         'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//         foodName: foodName,
+//         calories: modifiedCals,
+//         protein: 0,
+//         carbs: 0,
+//         fat: 0,
+//         }),
+//     });
+
+
+
+//     const data = await response.json();
+//     } catch (error: any) {
+//         console.error(error.message);
+//     }
+// };
+
   const [modifiedCals, setCalories] = React.useState(0);
   const [modifiedServingSize, setServingSize] = React.useState(0);
   const [customCals, setCustomCals] = React.useState(0);
@@ -105,7 +162,7 @@ export default function DietDrawer({
             </div>
           </div>
           <DrawerFooter>
-            <Button>Add Item</Button>
+            <Button onClick={() => logBrandedFood(foodId, modifiedServingSize)}>Add Item</Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>

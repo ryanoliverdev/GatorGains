@@ -1,6 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { getFoodItems } from '@/client/nutrition';
+import {
+  getFoodItems,
+  getBrandedNutrition,
+  getCommonNutrition
+} from '@/client/nutrition';
 import {
   Command,
   CommandEmpty,
@@ -39,6 +43,7 @@ import { Plus } from 'lucide-react';
 import DietDrawer from './dietDrawer';
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { Icons } from '../ui/icons';
+import { Progress } from '../ui/progress';
 
 interface FoodItem {
   food_name: string;
@@ -50,6 +55,7 @@ interface FoodItem {
 interface BrandedFoodItem extends FoodItem {
   brand_name: string;
   nf_calories: number;
+  item_id: string;
 }
 
 interface FoodItemsResult {
@@ -57,7 +63,21 @@ interface FoodItemsResult {
   brandedFoods: BrandedFoodItem[];
 }
 
-const DietComponent = () => {
+// const logCommonFood = async (foodName: string, serving: number | undefined) => {
+//   const macros = await getCommonNutrition({ foodName, serving });
+//   const response = await fetch(`/api/foodLog/${userId}`, {
+//     method: 'POST',
+//     headers: {
+//     'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       macros
+//     }),
+//   });
+//   return response;
+// }
+
+const DietComponent = ({ options }: { options: any }) => {
   const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<FoodItemsResult>({
@@ -65,6 +85,7 @@ const DietComponent = () => {
     brandedFoods: []
   });
   const [foodType, setFoodType] = useState('branded');
+  console.log(options + " DIET COMPONENT")
 
   useEffect(() => {
     setLoading(true);
@@ -89,6 +110,9 @@ const DietComponent = () => {
   return (
     <div>
       <div>
+        <p>Calories 4 da day: </p>
+      <Progress value={33} />
+
         <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -153,10 +177,12 @@ const DietComponent = () => {
 
                         <TableCell className="text-end">
                           <DietDrawer
+                            options={options}
                             servingUnit={food.serving_unit}
                             servingSize={food.serving_qty}
                             calories={food.nf_calories}
                             foodName={food.food_name}
+                            foodId={food.item_id}
                           ></DietDrawer>
                         </TableCell>
                       </TableRow>
