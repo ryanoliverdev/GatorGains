@@ -145,7 +145,7 @@ export default function ExerciseCard() {
           >
             Create New Custom Exercise
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent >
             <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border">
               <div className="my-12">
                 <div className="flex items-center justify-end">
@@ -327,7 +327,7 @@ export default function ExerciseCard() {
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
         Your Exercises
       </h1>
-      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border  mx-0">
+      <ScrollArea className="p-3 h-[800px] sm:h-[850px] w-full rounded-md border  mx-0">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {exerciseData.exercises.map((exercise, index) => (
             <Card key={index} className="font-light">
@@ -352,7 +352,7 @@ export default function ExerciseCard() {
                     </AlertDialogTrigger>
 
                     <AlertDialogContent>
-                      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
+                      <ScrollArea className="h-[800px] sm:h-[850px] w-full rounded-md border p-4 ">
                         <div className="my-12">
                           <div className="flex items-center justify-end">
                             <AlertDialogCancel>
