@@ -5,13 +5,13 @@ import { format } from "date-fns";
 
 export default async function getCalorieInfo(retId: string) {
   
-    const userInfo = await prisma.user.findUnique({
-        where: {
-            id: retId
-        }
-    })
+    // const userInfo = await prisma.user.findUnique({
+    //     where: {
+    //         id: retId
+    //     }
+    // })
 
-    const userCalories = userInfo?.dailyCalorieIntake;
+    const userCalories = 2000;
     var totalCalories = 0;
 
     const today = new Date();
@@ -37,7 +37,7 @@ export default async function getCalorieInfo(retId: string) {
         })
     }
 
-    console.log("These are the to0tal calories:  " + totalCalories)
+    console.log("These are the total calories:  " + totalCalories)
 
     return {userDailyCalories: userCalories, totalFoodCalories: totalCalories}
 

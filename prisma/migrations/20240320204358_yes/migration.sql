@@ -40,6 +40,7 @@ CREATE TABLE `User` (
     `emailVerified` DATETIME(3) NULL,
     `image` VARCHAR(191) NULL,
     `bio` VARCHAR(191) NULL,
+    `dailyCalorieIntake` INTEGER NOT NULL DEFAULT 2000,
     `streak` INTEGER NOT NULL DEFAULT 0,
 
     UNIQUE INDEX `User_email_key`(`email`),

@@ -39,28 +39,29 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String
-  email         String?        @unique
-  username      String?        @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  bio           String?
-  streak        Int            @default(0)
-  workouts      Workout[]
-  accounts      Account[]
-  sessions      Session[]
-  dailyFoodLogs DailyFoodLog[]
-  friends Friend[] @relation("UserFriends")
-  friendsOfUser Friend[] @relation("UserFriendships")
+  id                 String         @id @default(cuid())
+  name               String
+  email              String?        @unique
+  username           String?        @unique
+  password           String?
+  emailVerified      DateTime?
+  image              String?
+  bio                String?
+  dailyCalorieIntake Int            @default(2000)
+  streak             Int            @default(0)
+  workouts           Workout[]
+  accounts           Account[]
+  sessions           Session[]
+  dailyFoodLogs      DailyFoodLog[]
+  friends            Friend[]       @relation("UserFriends")
+  friendsOfUser      Friend[]       @relation("UserFriendships")
 }
 
 model Friend {
-  id String @id @default(cuid())
-  user User @relation("UserFriends", fields: [userId], references: [id])
-  userId String
-  friend User @relation("UserFriendships", fields: [friendId], references: [id])
+  id       String @id @default(cuid())
+  user     User   @relation("UserFriends", fields: [userId], references: [id])
+  userId   String
+  friend   User   @relation("UserFriendships", fields: [friendId], references: [id])
   friendId String
 
   @@unique([userId, friendId])
@@ -95,7 +96,7 @@ model Stat {
 model DailyFoodLog {
   id        String      @id @default(cuid())
   userId    String
-  date      String    @unique
+  date      String      @unique
   user      User        @relation(fields: [userId], references: [id])
   FoodEntry FoodEntry[]
 
@@ -103,13 +104,13 @@ model DailyFoodLog {
 }
 
 model FoodItem {
-  id             String       @id @default(cuid())
-  foodName       String       @unique
-  calories       Int
-  protein        Int
-  carbs          Int
-  fat            Int
-  foodEntries    FoodEntry[]
+  id          String      @id @default(cuid())
+  foodName    String      @unique
+  calories    Int
+  protein     Int
+  carbs       Int
+  fat         Int
+  foodEntries FoodEntry[]
 
   @@index([foodName])
 }

@@ -45,6 +45,7 @@ import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { Icons } from '../ui/icons';
 import { Progress } from '../ui/progress';
 import getUserDailyCalories from './dietFunctions';
+import { useRouter } from 'next/navigation';
 
 interface FoodItem {
   food_name: string;
@@ -91,19 +92,8 @@ export default function DietComponent({ options }: { options: any }) {
     brandedFoods: []
   });
   const [foodType, setFoodType] = useState('branded');
-  const [calInfo, setCalInfo] = useState<CalorieInfo>({
-    userDailyCalories: 0,
-    totalFoodCalories: 0
-  });
 
   useEffect(() => {
-    async function getCals() {
-      return (await getUserDailyCalories(options.user.id));
-    }
-
-    // if (calInfo.userDailyCalories === 0) {
-    //   getCals().then((data) => setCalInfo(data));
-    // }
 
     setLoading(true);
     const handler = setTimeout(() => {
@@ -124,14 +114,9 @@ export default function DietComponent({ options }: { options: any }) {
     };
   }, [query]);
 
-  console.log(calInfo.totalFoodCalories)
-
   return (
     <div>
       <div>
-        <p>Calories 4 da day: {calInfo.userDailyCalories} {calInfo.totalFoodCalories} </p>
-        <Progress value={33} />
-
         <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">
             <div className="grid w-full max-w-sm items-center gap-1.5">
