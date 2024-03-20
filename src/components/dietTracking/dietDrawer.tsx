@@ -36,7 +36,6 @@ export default function DietDrawer({
     try {
       const macros = await getBrandedNutrition({ item_id, serving });
       const servingSize = serving || 1;
-      console.log(macros)
       const response = await fetch(`/api/foodLog/${options.user.email}`, {
         method: 'POST',
         headers: {
