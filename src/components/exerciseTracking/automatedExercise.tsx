@@ -118,14 +118,14 @@ export default function AutomatedExercise() {
         Create New Automated Exercise
       </AlertDialogTrigger>
       <AlertDialogContent>
-      <ScrollArea className=" h-[600px] sm:h-auto w-full rounded-md  mt-8">
+      <ScrollArea className="h-[600px] sm:h-auto w-full rounded-md  mt-8">
         <div className="flex items-center justify-end">
           <AlertDialogCancel onClick={resetExercise}>
             <XIcon className="w-4 h-4" />
           </AlertDialogCancel>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="p-1">
             <FormField
               control={form.control}
               name="message"

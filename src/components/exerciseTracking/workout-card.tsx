@@ -206,7 +206,7 @@ export default function WorkoutCard() {
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
         Your Workouts
       </h1>
-      <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border ">
+      <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border ">
         <Accordion type="single" collapsible className="w-full">
           {workoutData.map((workout, index) => (
             <div key={index} className="my-2 sm:m-auto">
