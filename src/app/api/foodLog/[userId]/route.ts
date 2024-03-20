@@ -13,13 +13,17 @@ export async function POST(req: Request, { params }: { params: { userId: string 
       carbs: number;
       fat: number;
     };
-
     const today = new Date();
     const formattedDate = format(today, 'MM/dd/yyyy');
 
     const foodItem = await prisma.foodItem.upsert({
-      where: { foodName, calories },
-      update: {},
+      where: { foodName },
+      update: {
+        calories,
+        protein,
+        carbs,
+        fat
+      },
       create: {
         foodName,
         calories,
