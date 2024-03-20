@@ -35,6 +35,7 @@ export default function DietDrawer({
   ) => {
     try {
       const macros = await getBrandedNutrition({ item_id, serving });
+      const servingSize = serving || 1;
       console.log(macros)
       const response = await fetch(`/api/foodLog/${options.user.email}`, {
         method: 'POST',
@@ -43,10 +44,10 @@ export default function DietDrawer({
         },
         body: JSON.stringify({
           foodName: macros.food_name,
-          calories: macros.calories,
-          protein: macros.protein,
-          carbs: macros.carbs,
-          fat: macros.fat
+          calories: macros.calories * servingSize,
+          protein: macros.protein * servingSize,
+          carbs: macros.carbs * servingSize,
+          fat: macros.fat * servingSize
         })
       });
       return response;

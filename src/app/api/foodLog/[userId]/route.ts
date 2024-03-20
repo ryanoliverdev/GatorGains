@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request, { params }: { params: { userId: string } }, res: NextApiResponse) {
   try {
     const userId = params.userId as string;
-    console.log(userId)
     const { foodName, calories, protein, carbs, fat } = await req.json() as {
       foodName: string;
       calories: number;
@@ -19,7 +18,7 @@ export async function POST(req: Request, { params }: { params: { userId: string 
     const formattedDate = format(today, 'MM/dd/yyyy');
 
     const foodItem = await prisma.foodItem.upsert({
-      where: { foodName },
+      where: { foodName, calories },
       update: {},
       create: {
         foodName,
