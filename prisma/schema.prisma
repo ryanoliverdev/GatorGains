@@ -47,6 +47,7 @@ model User {
   emailVerified DateTime?
   image         String?
   bio           String?
+  dailyCalorieIntake Int            @default(2000)
   streak        Int            @default(0)
   workouts      Workout[]
   accounts      Account[]
@@ -118,6 +119,7 @@ model FoodEntry {
   id             String       @id @default(cuid())
   dailyFoodLogId String
   foodItemId     String
+  servingSize    Int          @default(1)
   dailyFoodLog   DailyFoodLog @relation(fields: [dailyFoodLogId], references: [id])
   foodItem       FoodItem     @relation(fields: [foodItemId], references: [id])
 
