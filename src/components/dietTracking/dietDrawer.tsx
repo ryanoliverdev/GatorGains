@@ -12,6 +12,7 @@ import {
   DrawerTrigger
 } from '@/components/ui/drawer';
 import { getBrandedNutrition } from '@/client/nutrition';
+import { format } from 'date-fns';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 
@@ -30,6 +31,20 @@ export default function DietDrawer({
   foodName: string;
   foodId: string;
 }) {
+  const getLogForUser = async () => {
+    try {
+      const formattedDate = format(new Date(), 'MM-dd-yyyy');
+      const response = await fetch(`/api/foodLog/${options.user.email}?date=${formattedDate}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      return response;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
   const [isLoading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -51,10 +66,11 @@ export default function DietDrawer({
         },
         body: JSON.stringify({
           foodName: macros.food_name,
-          calories: macros.calories * servingSize,
-          protein: macros.protein * servingSize,
-          carbs: macros.carbs * servingSize,
-          fat: macros.fat * servingSize
+          calories: macros.calories,
+          protein: macros.protein,
+          carbs: macros.carbs,
+          fat: macros.fat,
+          servingSize
         })
       });
 

@@ -39,22 +39,22 @@ model Session {
 }
 
 model User {
-  id                 String         @id @default(cuid())
-  name               String
-  email              String?        @unique
-  username           String?        @unique
-  password           String?
-  emailVerified      DateTime?
-  image              String?
-  bio                String?
+  id            String         @id @default(cuid())
+  name          String
+  email         String?        @unique
+  username      String?        @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  bio           String?
   dailyCalorieIntake Int            @default(2000)
-  streak             Int            @default(0)
-  workouts           Workout[]
-  accounts           Account[]
-  sessions           Session[]
-  dailyFoodLogs      DailyFoodLog[]
-  friends            Friend[]       @relation("UserFriends")
-  friendsOfUser      Friend[]       @relation("UserFriendships")
+  streak        Int            @default(0)
+  workouts      Workout[]
+  accounts      Account[]
+  sessions      Session[]
+  dailyFoodLogs DailyFoodLog[]
+  friends Friend[] @relation("UserFriends")
+  friendsOfUser Friend[] @relation("UserFriendships")
 }
 
 model Friend {
@@ -119,6 +119,7 @@ model FoodEntry {
   id             String       @id @default(cuid())
   dailyFoodLogId String
   foodItemId     String
+  servingSize    Int          @default(1)
   dailyFoodLog   DailyFoodLog @relation(fields: [dailyFoodLogId], references: [id])
   foodItem       FoodItem     @relation(fields: [foodItemId], references: [id])
 
