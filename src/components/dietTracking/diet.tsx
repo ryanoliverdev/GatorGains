@@ -46,6 +46,8 @@ import { Icons } from '../ui/icons';
 import { Progress } from '../ui/progress';
 import getUserDailyCalories from './dietFunctions';
 import { useRouter } from 'next/navigation';
+import MacroChart from './macroChart';
+import Example from './macroChart';
 
 interface FoodItem {
   food_name: string;
@@ -116,6 +118,7 @@ export default function DietComponent({ options }: { options: any }) {
 
   return (
     <div>
+      
       <div>
         <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">

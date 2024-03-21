@@ -4,7 +4,8 @@ import DietComponent from './diet';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Progress } from '../ui/progress';
-import getCalorieInfo from './dietFunctions';
+import getCalorieInfo, { getFoodItems, getMacroInfo } from './dietFunctions';
+import TopComponent from './topComponent';
 
 export default async function MainDiet() {
   const session = await getServerSession(authOptions);
@@ -12,7 +13,8 @@ export default async function MainDiet() {
   if (session !== null) {
 
     const calInfo = await getCalorieInfo(session.user.id);
-
+    const macroInfo = await getMacroInfo(session.user.id);
+    const foodItems = await getFoodItems(session.user.id);
 
     return (
       <div>
@@ -27,6 +29,7 @@ export default async function MainDiet() {
             {calInfo.totalFoodCalories} / {calInfo.userDailyCalories} Calories
           </h1>
         </div>
+        <TopComponent macros={macroInfo} calInfo={calInfo.totalFoodCalories} foods={foodItems}></TopComponent>
         <DietComponent options={session}></DietComponent>
       </div>
     );
