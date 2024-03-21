@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -39,22 +38,22 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String
-  email         String?        @unique
-  username      String?        @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  bio           String?
-  dailyCalorieIntake Int            @default(2000)
-  streak        Int            @default(0)
-  workouts      Workout[]
-  accounts      Account[]
-  sessions      Session[]
-  dailyFoodLogs DailyFoodLog[]
-  friends Friend[] @relation("UserFriends")
-  friendsOfUser Friend[] @relation("UserFriendships")
+  id                 String   @id @default(cuid())
+  name               String
+  email              String?  @unique
+  username           String?  @unique
+  password           String?
+  emailVerified      DateTime?
+  image              String?
+  bio                String?
+  dailyCalorieIntake Int      @default(2000)
+  streak             Int      @default(0)
+  workouts           Workout[]
+  accounts           Account[]
+  sessions           Session[]
+  dailyFoodLogs      DailyFoodLog[]
+  friends            Friend[] @relation("UserFriends")
+  friendsOfUser      Friend[] @relation("UserFriendships")
 }
 
 model Friend {
@@ -96,10 +95,11 @@ model Stat {
 model DailyFoodLog {
   id        String      @id @default(cuid())
   userId    String
-  date      String      @unique
+  date      String
   user      User        @relation(fields: [userId], references: [id])
   FoodEntry FoodEntry[]
 
+  @@unique([userId, date], name: "userId_date")
   @@index([userId])
 }
 

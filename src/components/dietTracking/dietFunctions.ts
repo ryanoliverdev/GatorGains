@@ -19,8 +19,10 @@ export default async function getCalorieInfo(retId: string) {
     
     const foodInfo = await prisma.dailyFoodLog.findUnique({
         where: {
-            userId: retId,
-            date: formattedDate
+            userId_date: {
+                userId: retId,
+                date: formattedDate
+            }
         },
         include: {
             FoodEntry: {

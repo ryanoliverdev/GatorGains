@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request, { params }: { params: { userId: string } }, res: NextApiResponse) {
   try {
-    const userId = params.userId as string;
+    const currUserId = params.userId as string;
     const { foodName, calories, protein, carbs, fat, servingSize } = await req.json() as {
       foodName: string;
       calories: number;
@@ -30,13 +30,14 @@ export async function POST(req: Request, { params }: { params: { userId: string 
     });
 
     const dailyFoodLog = await prisma.dailyFoodLog.upsert({
-        where: { date: formattedDate },
+        where: { userId_date: { userId: currUserId, date: formattedDate } },
         update: {}, 
         create: {
-          userId,
+          userId: currUserId,
           date: formattedDate,
         },
       });
+
     const foodEntry = await prisma.foodEntry.create({
       data: {
         dailyFoodLog: {
