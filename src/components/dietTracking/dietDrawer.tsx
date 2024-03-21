@@ -12,6 +12,7 @@ import {
   DrawerTrigger
 } from '@/components/ui/drawer';
 import { getBrandedNutrition } from '@/client/nutrition';
+import { format } from 'date-fns';
 
 export default function DietDrawer({
   options,
@@ -30,7 +31,8 @@ export default function DietDrawer({
 }) {
   const getLogForUser = async () => {
     try {
-      const response = await fetch(`/api/foodLog/${options.user.email}`, {
+      const formattedDate = format(new Date(), 'MM-dd-yyyy');
+      const response = await fetch(`/api/foodLog/${options.user.email}?date=${formattedDate}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
