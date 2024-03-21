@@ -44,6 +44,8 @@ import DietDrawer from './dietDrawer';
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { Icons } from '../ui/icons';
 import { Progress } from '../ui/progress';
+import getUserDailyCalories from './dietFunctions';
+import { useRouter } from 'next/navigation';
 
 interface FoodItem {
   food_name: string;
@@ -63,6 +65,11 @@ interface FoodItemsResult {
   brandedFoods: BrandedFoodItem[];
 }
 
+interface CalorieInfo {
+  userDailyCalories: number;
+  totalFoodCalories: number;
+}
+
 // const logCommonFood = async (foodName: string, serving: number | undefined) => {
 //   const macros = await getCommonNutrition({ foodName, serving });
 //   const response = await fetch(`/api/foodLog/${userId}`, {
@@ -77,7 +84,7 @@ interface FoodItemsResult {
 //   return response;
 // }
 
-const DietComponent = ({ options }: { options: any }) => {
+export default function DietComponent({ options }: { options: any }) {
   const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<FoodItemsResult>({
@@ -85,9 +92,9 @@ const DietComponent = ({ options }: { options: any }) => {
     brandedFoods: []
   });
   const [foodType, setFoodType] = useState('branded');
-  console.log(options + " DIET COMPONENT")
 
   useEffect(() => {
+
     setLoading(true);
     const handler = setTimeout(() => {
       if (query.trim()) {
@@ -110,9 +117,6 @@ const DietComponent = ({ options }: { options: any }) => {
   return (
     <div>
       <div>
-        <p>Calories 4 da day: </p>
-      <Progress value={33} />
-
         <Card className="p-5 mt-6 mb-6">
           <div className="flex justify-between flex-col md:flex-row gap-4 mb-5">
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -248,6 +252,4 @@ const DietComponent = ({ options }: { options: any }) => {
       </div> */}
     </div>
   );
-};
-
-export default DietComponent;
+}
