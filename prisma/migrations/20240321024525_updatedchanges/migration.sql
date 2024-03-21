@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `FoodEntry` ADD COLUMN `servingSize` INTEGER NOT NULL DEFAULT 1;

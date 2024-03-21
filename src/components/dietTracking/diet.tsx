@@ -107,7 +107,7 @@ export default function DietComponent({ options }: { options: any }) {
       } else {
         setResults({ commonFoods: [], brandedFoods: [] });
       }
-    }, 300);
+    }, 3000);
 
     return () => {
       clearTimeout(handler);
