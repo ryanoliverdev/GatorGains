@@ -25,7 +25,7 @@ export default async function getCalorieInfo(retId: string) {
         include: {
             FoodEntry: {
                 include: {
-                    foodItem: true
+                    foodItem: true,
                 }
             }
         }
@@ -33,7 +33,7 @@ export default async function getCalorieInfo(retId: string) {
 
     if(foodInfo != null) {
         foodInfo.FoodEntry.forEach((item) => {
-            totalCalories += item.foodItem.calories
+            totalCalories += item.foodItem.calories * item.servingSize
         })
     }
 
