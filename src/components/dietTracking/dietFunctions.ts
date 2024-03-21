@@ -15,7 +15,7 @@ export default async function getCalorieInfo(retId: string) {
     var totalCalories = 0;
 
     const today = new Date();
-    const formattedDate = format(today, 'MM/dd/yyyy');
+    const formattedDate = format(today, 'MM-dd-yyyy');
     
     const foodInfo = await prisma.dailyFoodLog.findUnique({
         where: {
