@@ -73,7 +73,7 @@ export function MobileNav({ options }: { options: any }) {
                 Home
               </MobileLink>
               <MobileLink
-                href="/leaderboards/individual"
+                href="/leaderboards"
                 onOpenChange={setOpen}
               >
                 Leaderboards
@@ -155,20 +155,17 @@ export function MobileNav({ options }: { options: any }) {
               <MobileLink href="/dashboard" onOpenChange={setOpen}>
                 Dashboard
               </MobileLink>
-              <MobileLink href="/" onOpenChange={setOpen}>
+              <MobileLink href="/groups" onOpenChange={setOpen}>
                 Groups
               </MobileLink>
               <MobileLink
-                href="/leaderboards/individual"
+                href="/leaderboards"
                 onOpenChange={setOpen}
               >
                 Leaderboards
               </MobileLink>
-              <MobileLink href="/" onOpenChange={setOpen}>
+              <MobileLink href="/exercises" onOpenChange={setOpen}>
                 Exercises
-              </MobileLink>
-              <MobileLink href="/" onOpenChange={setOpen}>
-                Tracking
               </MobileLink>
               <MobileLink href="/diet" onOpenChange={setOpen}>
                 Diet

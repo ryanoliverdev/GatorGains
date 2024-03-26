@@ -10,22 +10,29 @@ export default async function SettingsProfilePage() {
   const session = await getServerSession(authOptions);
 
   async function getUserNameAndBio() {
-
     const info = await prisma.user.findUnique({
       where: {
         id: session?.user?.id
       }
-    })
+    });
 
-    return {name: info?.name, bio: info?.bio}
-
+    return { name: info?.username, bio: info?.bio };
   }
 
   const info = await getUserNameAndBio();
 
   return (
     <div className="space-y-6">
-      <ProfileForm userName={info.name || ''} userBio={info.bio || ''} userId={session?.user?.id || ''} />
+      {info.name === null && (
+        <h1 className=" text-red-500 font-bold">
+          Please update your account with a username!
+        </h1>
+      )}
+      <ProfileForm
+        userName={info.name || ''}
+        userBio={info.bio || ''}
+        userId={session?.user?.id || ''}
+      />
     </div>
   );
 }

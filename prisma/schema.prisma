@@ -48,6 +48,7 @@ model User {
   bio                String?
   dailyCalorieIntake Int      @default(2000)
   streak             Int      @default(0)
+  xp Int @default(0)
   workouts           Workout[]
   accounts           Account[]
   sessions           Session[]
