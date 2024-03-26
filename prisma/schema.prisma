@@ -38,23 +38,50 @@ model Session {
 }
 
 model User {
-  id                 String   @id @default(cuid())
+  id                 String         @id @default(cuid())
   name               String
-  email              String?  @unique
-  username           String?  @unique
+  email              String?        @unique
+  username           String?        @unique
   password           String?
   emailVerified      DateTime?
   image              String?
   bio                String?
-  dailyCalorieIntake Int      @default(2000)
-  streak             Int      @default(0)
-  xp Int @default(0)
+  dailyCalorieIntake Int            @default(2000)
+  streak             Int            @default(0)
+  xp                 Int            @default(0)
+  groups             Group[]
   workouts           Workout[]
   accounts           Account[]
   sessions           Session[]
   dailyFoodLogs      DailyFoodLog[]
-  friends            Friend[] @relation("UserFriends")
-  friendsOfUser      Friend[] @relation("UserFriendships")
+  friends            Friend[]       @relation("UserFriends")
+  friendsOfUser      Friend[]       @relation("UserFriendships")
+  Message            Message[]
+}
+
+model Group {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  groupXp    Int       @default(0)
+  messages    Message[]
+  users       User[]
+  groupLeader String
+  @@index([name])
+  @@index([description])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  groupId   String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
+
+  @@index([groupId])
+  @@index([userId])
 }
 
 model Friend {

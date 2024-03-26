@@ -53,20 +53,10 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async redirect({
-      url,
-      baseUrl,
-      user
-    }: {
-      url: string;
-      baseUrl: string;
-      user?: any;
-    }) {
-      if (user?.username === null) {
-        if (url.startsWith(baseUrl) && !url.includes('/profile')) {
-          return `${baseUrl}/profile`;
-        }
-      } else return `${baseUrl}/dashboard`;
+    async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
+      if (url.startsWith(baseUrl) && !url.includes('/profile')) {
+        return `${baseUrl}/profile`;
+      }
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
     async jwt({ token, user }) {
