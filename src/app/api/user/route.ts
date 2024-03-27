@@ -61,16 +61,22 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const { email, bio } = (await req.json()) as {
-      email: string | undefined;
+
+    const { userId, username, bio } = (await req.json()) as {
+      userId: string | undefined;
+      username: string | undefined;
       bio: string | undefined;
     };
+
+    console.log(userId, username, bio);
+
     const updateUser = await prisma.user.update({
       where: {
-        email
+        id: userId
       },
       data: {
-        bio
+        bio: bio,
+        username: username
       }
     });
      if (updateUser) {
@@ -79,7 +85,7 @@ export async function PUT(req: Request) {
           status: 'success',
           message: 'User updated successfully.',
           user: {
-            email,
+            username,
             bio
           }
         }),

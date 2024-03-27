@@ -9,6 +9,8 @@ import { buttonVariants } from '@/components/ui/button';
 import { AvatarMenu } from './avatarMenu';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import Image from 'next/image';
+import logo from '@/assets/logosvggradient.svg';
 
 export async function SiteHeader() {
   const session = await getServerSession(authOptions);
@@ -19,8 +21,11 @@ export async function SiteHeader() {
         <MainNav options={session} />
         <MobileNav options={session} />
         <div className="flex flex-1 items-center justify-center md:justify-end">
-          <Link href="/" className="md:hidden font-bold">
-            <span className="font-bold">GatorGains</span>
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Image src={logo} width={30} alt="gator logo" />
+            <span className="text-primary md:hidden text-base font-bold sm:inline-block">
+              GatorGains
+            </span>
           </Link>
         </div>
         <AvatarMenu options={session} />

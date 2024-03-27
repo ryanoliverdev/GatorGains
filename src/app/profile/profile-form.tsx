@@ -27,6 +27,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { prisma } from '@/lib/prisma';
+import { useRouter } from 'next/navigation';
 
 interface SessionProps {
   email: string;
@@ -41,62 +42,51 @@ const profileFormSchema = z.object({
     .max(30, {
       message: 'Username must not be longer than 30 characters.'
     }),
-  email: z
-    .string({
-      required_error: 'Please select an email to display.'
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: 'Please enter a valid URL.' })
-      })
-    )
-    .optional()
+
+  bio: z.string().max(160).min(4)
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: 'I own a computer.',
-  urls: [
-    { value: 'https://shadcn.com' },
-    { value: 'http://twitter.com/shadcn' }
-  ]
-};
 
-export function ProfileForm({ email }: SessionProps) {
+
+export function ProfileForm({userName, userBio, userId}: {userName: string, userBio: string, userId: string}) {
+
+  const router = useRouter();
+
+  const defaultValues: Partial<ProfileFormValues> = {
+    bio: userBio,
+    username: userName
+  };
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: 'onChange'
   });
 
-  const { fields, append } = useFieldArray({
-    name: 'urls',
-    control: form.control
-  });
-
   async function onSubmit(data: ProfileFormValues) {
-    const { bio } = data;
-    console.log({ email, bio });
+    const { bio, username } = data;
+
+    console.log(data)
+    console.log(userId)
+
     const res = await fetch('/api/user', {
       method: 'PUT',
-      body: JSON.stringify({ email, bio }),
+      body: JSON.stringify({ userId, username, bio }),
       headers: {
         'Content-Type': 'application/json'
       }
     });
     toast({
-      title: 'You submitted the following values:',
+      title: 'Success!',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <p>Your profile was succesfully updated!</p>
       )
     });
+
+    router.refresh();
   }
 
   return (
@@ -109,7 +99,7 @@ export function ProfileForm({ email }: SessionProps) {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Username" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -119,34 +109,7 @@ export function ProfileForm({ email }: SessionProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="pohlgeon@gmail.com">
-                    pohlgeon@gmail.com
-                  </SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{' '}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <FormField
           control={form.control}
           name="bio"
@@ -155,51 +118,19 @@ export function ProfileForm({ email }: SessionProps) {
               <FormLabel>Bio</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
+                  placeholder="Information about yourself"
+                  className="resize-none text-base"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
+                Other users will be able to see your bio.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2"
-            onClick={() => append({ value: '' })}
-          >
-            Add URL
-          </Button>
-        </div>
+
         <Button type="submit">Update profile</Button>
       </form>
     </Form>

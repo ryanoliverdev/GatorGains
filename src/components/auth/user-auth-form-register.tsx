@@ -92,7 +92,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           email: values.email,
           password: values.password,
           redirect: true,
-          callbackUrl: `${window.location.origin}/dashboard`
+          callbackUrl: `${window.location.origin}/profile`
         });
       } else if (res.status == 400) {
         toast.toast({
