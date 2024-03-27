@@ -44,24 +44,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '../ui/use-toast';
 import { ToastAction } from '@radix-ui/react-toast';
 import workoutData from '@/components/exerciseTracking/workoutData';
 import exerciseData from '@/components/exerciseTracking/exerciseData';
 import { XIcon } from '@heroicons/react/outline';
 import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
-
-interface Exercise {
-  exerciseName: string;
-  difficulty: string;
-  type: string;
-  sets: string;
-  duration_reps: string;
-  muscle: string;
-  equipment: string;
-  description: string;
-}
+import { getUserExercises } from '@/app/exercises/exerciseActions';
+import { Exercise } from '@/components/exerciseTracking/automatedExercise';
 
 const formSchema = z.object({
   exerciseName: z.string().min(1, {
@@ -76,7 +67,8 @@ const formSchema = z.object({
   description: z.string().optional()
 });
 
-export default function ExerciseCard() {
+export default function ExerciseCard({ options }: { options: any }) {
+  const [userExercises, setUserExercises] = useState<Exercise[]>([]);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
@@ -124,16 +116,29 @@ export default function ExerciseCard() {
     setSelectedExercise(exercise);
     console.log(exercise);
     form.reset({
-      exerciseName: exercise.exerciseName,
-      difficulty: exercise.difficulty,
-      type: exercise.type,
-      sets: exercise.sets,
-      duration_reps: exercise.duration_reps,
-      muscle: exercise.muscle,
-      equipment: exercise.equipment,
-      description: exercise.description
+      exerciseName: exercise.exerciseName!,
+      difficulty: exercise.difficulty!,
+      type: exercise.type!,
+      sets: exercise.sets!,
+      duration_reps: exercise.duration_reps!,
+      muscle: exercise.muscle!,
+      equipment: exercise.equipment!,
+      description: exercise.description!
     }); // Update default values for the form
   };
+
+  useEffect(() => {
+    const retreiveUserExercises = async (userId: string) => {
+      try {
+        const exercises = await getUserExercises(userId);
+        setUserExercises(exercises);
+      } catch (error) {
+        console.error('Failed to retrieve exercises for user', error);
+        throw error;
+      }
+    }
+    retreiveUserExercises(options.user.id);
+  }, []);
 
   return (
     <div>
@@ -318,7 +323,7 @@ export default function ExerciseCard() {
             </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
-        <AutomatedExercise>
+        <AutomatedExercise options={options}>
           
         </AutomatedExercise>
 
@@ -329,7 +334,7 @@ export default function ExerciseCard() {
       </h1>
       <ScrollArea className="p-3 h-[800px] sm:h-[850px] w-full rounded-md border  mx-0">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {exerciseData.exercises.map((exercise, index) => (
+          {userExercises!.map((exercise, index) => (
             <Card key={index} className="font-light">
               <div className="p-8 font-light flex flex-col justify-between h-full">
                 <div className="mb-4">

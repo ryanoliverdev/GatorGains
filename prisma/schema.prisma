@@ -56,6 +56,7 @@ model User {
   dailyFoodLogs      DailyFoodLog[]
   friends            Friend[]       @relation("UserFriends")
   friendsOfUser      Friend[]       @relation("UserFriendships")
+  exercises          Exercise[]
   Message            Message[]
 }
 
@@ -102,22 +103,29 @@ model Workout {
   workoutType    String?
   duration       Int?
   user           User     @relation(fields: [userId], references: [id])
-  stats          Stat[]
+  exercise       Exercise[]
   caloriesBurned Int?
 
   @@index([userId])
 }
 
-model Stat {
-  id           String  @id @default(cuid())
-  workoutId    String
+model Exercise {
+  id          String   @id @default(cuid())
+  workoutId   String?
+  userId      String
   exerciseName String?
-  reps         Int?
-  sets         Int?
-  weightLifted Int?
-  workout      Workout @relation(fields: [workoutId], references: [id])
-
+  difficulty  String?
+  type        String?
+  sets        String?
+  duration_reps  String?
+  muscle      String?
+  equipment   String?
+  description String?
+  weight      Int?
+  workout     Workout? @relation(fields: [workoutId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
   @@index([workoutId])
+  @@index([userId])
 }
 
 model DailyFoodLog {

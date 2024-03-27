@@ -14,7 +14,7 @@ export default async function ExerciseTracking() {
 
   return (
     <div className="container">
-        <ExerciseComponent></ExerciseComponent> 
+        <ExerciseComponent options={session}></ExerciseComponent> 
     </div>
   );
 }
