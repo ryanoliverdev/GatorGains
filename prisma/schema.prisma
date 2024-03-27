@@ -64,10 +64,11 @@ model Group {
   id          String    @id @default(cuid())
   name        String    @unique
   description String?
-  groupXp    Int       @default(0)
+  groupXp     Int       @default(0)
   messages    Message[]
   users       User[]
   groupLeader String
+
   @@index([name])
   @@index([description])
 }
@@ -97,34 +98,42 @@ model Friend {
 }
 
 model Workout {
-  id             String   @id @default(cuid())
+  id             String          @id @default(cuid())
+  workoutName    String?         @unique
   userId         String
-  workoutDate    DateTime
-  workoutType    String?
-  duration       Int?
-  user           User     @relation(fields: [userId], references: [id])
-  exercise       Exercise[]
-  caloriesBurned Int?
+  workoutDate    String          @unique
+  user           User            @relation(fields: [userId], references: [id])
+  ExerciseEntry  ExerciseEntry[]
 
   @@index([userId])
 }
 
-model Exercise {
-  id          String   @id @default(cuid())
-  workoutId   String?
-  userId      String
-  exerciseName String?
-  difficulty  String?
-  type        String?
-  sets        String?
-  duration_reps  String?
-  muscle      String?
-  equipment   String?
-  description String?
-  weight      Int?
-  workout     Workout? @relation(fields: [workoutId], references: [id])
-  user        User     @relation(fields: [userId], references: [id])
+model ExerciseEntry {
+  id           String   @id @default(cuid())
+  workoutId    String
+  exerciseName String
+  workout      Workout  @relation(fields: [workoutId], references: [id])
+  exercise     Exercise @relation(fields: [exerciseName], references: [exerciseName])
+
   @@index([workoutId])
+  @@index([exerciseName])
+}
+
+model Exercise {
+  id            String          @id @default(cuid())
+  userId        String
+  exerciseName  String          @unique
+  difficulty    String?
+  type          String?
+  sets          String?
+  duration_reps String?
+  muscle        String?
+  equipment     String?
+  description   String?
+  weight        Int?
+  user          User            @relation(fields: [userId], references: [id])
+  ExerciseEntry ExerciseEntry[]
+
   @@index([userId])
 }
 

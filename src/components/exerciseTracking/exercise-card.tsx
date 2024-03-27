@@ -53,6 +53,7 @@ import { XIcon } from '@heroicons/react/outline';
 import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
 import { getUserExercises } from '@/app/exercises/exerciseActions';
 import { Exercise } from '@/components/exerciseTracking/automatedExercise';
+import { createExerciseForUser, editExerciseForUser, deleteExerciseForUser, getExerciseByName } from '@/app/exercises/exerciseActions';
 
 const formSchema = z.object({
   exerciseName: z.string().min(1, {
@@ -72,6 +73,7 @@ export default function ExerciseCard({ options }: { options: any }) {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
+  const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,13 +90,33 @@ export default function ExerciseCard({ options }: { options: any }) {
   });
 
   async function onSubmitCustom(values: z.infer<typeof formSchema>) {
-    //post new exercises here
+    const exerciseValues: Exercise = {
+      exerciseName: values.exerciseName,
+      difficulty: values.difficulty !== undefined ? values.difficulty : null,
+      type: values.type !== undefined ? values.type : null,
+      sets: values.sets !== undefined ? values.sets : null,
+      duration_reps: values.duration_reps !== undefined ? values.duration_reps : null,
+      muscle: values.muscle !== undefined ? values.muscle : null,
+      equipment: values.equipment !== undefined ? values.equipment : null, 
+      description: values.description !== undefined ? values.description : null,
+    };
+    createExerciseForUser(options.user.id, exerciseValues);
 
     console.log(values);
   }
 
   async function onSubmitEdit(values: z.infer<typeof formSchema>) {
-    //edit exercises here
+    const exerciseValues: Exercise = {
+      exerciseName: values.exerciseName,
+      difficulty: values.difficulty !== undefined ? values.difficulty : null,
+      type: values.type !== undefined ? values.type : null,
+      sets: values.sets !== undefined ? values.sets : null,
+      duration_reps: values.duration_reps !== undefined ? values.duration_reps : null,
+      muscle: values.muscle !== undefined ? values.muscle : null,
+      equipment: values.equipment !== undefined ? values.equipment : null, 
+      description: values.description !== undefined ? values.description : null,
+    };
+    editExerciseForUser(options.user.id, selectedExerciseId!, exerciseValues);
 
     console.log(values);
   }
@@ -112,7 +134,9 @@ export default function ExerciseCard({ options }: { options: any }) {
     }); // Reset form to blank values
   };
 
-  const handleEditClick = (exercise: Exercise) => {
+  const handleEditClick = async (exercise: Exercise) => {
+    const currExercise = await getExerciseByName(options.user.id, exercise.exerciseName!);
+    setSelectedExerciseId(currExercise!.id!);
     setSelectedExercise(exercise);
     console.log(exercise);
     form.reset({

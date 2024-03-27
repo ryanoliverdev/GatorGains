@@ -34,7 +34,7 @@ export default function ExerciseComponent({ options }: { options: any }) {
       </TabsContent>
       <TabsContent value="workouts">
       <div className="w-full h-full"> 
-      <WorkoutCard></WorkoutCard>
+      <WorkoutCard session={options}></WorkoutCard>
       </div>
       </TabsContent>
     </Tabs>

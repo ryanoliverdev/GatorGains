@@ -42,7 +42,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { createExerciseForUser } from '@/app/exercises/exerciseActions';
 
 export interface Exercise {
-  exerciseName: string | null;
+  exerciseName: string;
   difficulty: string | null;
   type: string | null;
   sets: string | null;
