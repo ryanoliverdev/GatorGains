@@ -1,19 +1,26 @@
-'use client';
+'use server';
+
 import ExampleSearch from '@/components/example/search';
 import NutritionTable from '@/components/nutritionTracking/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import DashboardDiet from '@/components/dietTracking/dashboardDiet';
+import { Card } from '@/components/ui/card';
+import SummaryCard from '@/components/features/dashboard/summaryCard';
 
-export function DashboardFinal({ options }: { options: any }) {
+export async function DashboardFinal({ options }: { options: any }) {
   return (
     <div>
-      <h1>Dashboard Change</h1>
-      <p>Welcome, {options.user.name}</p>
-      <p>Here&apos;s your avatar, </p>
-      <img src={options.user.image} alt="react logo" />
-      <ExampleSearch></ExampleSearch>
+      <div className="container my-6 space-y-6">
+        <div className="flex justify-center">
+          <div className="w-full rounded-lg border divide-y shadow-sm">
+            <SummaryCard options={options}></SummaryCard>
+            <DashboardDiet></DashboardDiet>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

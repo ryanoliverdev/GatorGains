@@ -117,8 +117,8 @@ export default function AutomatedExercise() {
       <AlertDialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 sm:mt-0 rounded-lg inline-block px-4 py-2">
         Create New Automated Exercise
       </AlertDialogTrigger>
-      <AlertDialogContent>
-      <ScrollArea className="h-[600px] sm:h-auto w-full rounded-md  mt-8">
+      <AlertDialogContent className={isCurrentExercise ? "h-3/5" : "h-2/6"}>
+      <ScrollArea className="sm:h-auto w-full rounded-md  mt-8">
         <div className="flex items-center justify-end">
           <AlertDialogCancel onClick={resetExercise}>
             <XIcon className="w-4 h-4" />
@@ -177,9 +177,11 @@ export default function AutomatedExercise() {
                 </Button>
               </div>
             ) : (
+              <div className="flex justify-center items-end h-full">
               <Button type="submit" className="mt-16 mx-1">
-               Create Exercise
+                Generate Exercise
               </Button>
+            </div>
             )}
           </form>
         </Form>

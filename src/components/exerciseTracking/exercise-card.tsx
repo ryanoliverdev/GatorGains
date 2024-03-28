@@ -145,8 +145,8 @@ export default function ExerciseCard() {
           >
             Create New Custom Exercise
           </AlertDialogTrigger>
-          <AlertDialogContent >
-            <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border">
+          <AlertDialogContent className="h-4/5">
+            <ScrollArea className="  w-full rounded-md ">
               <div className="my-12">
                 <div className="flex items-center justify-end">
                   <AlertDialogCancel>
@@ -307,21 +307,19 @@ export default function ExerciseCard() {
                         </FormItem>
                       )}
                     />
-                    {form.formState.isValid && (
-                      <AlertDialogAction type="submit">
-                        Submit
-                      </AlertDialogAction>
-                    )}
+                    <AlertDialogAction
+                      type="submit"
+                      disabled={!form.formState.isValid}
+                    >
+                      Submit
+                    </AlertDialogAction>
                   </form>
                 </Form>
               </div>
             </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
-        <AutomatedExercise>
-          
-        </AutomatedExercise>
-
+        <AutomatedExercise></AutomatedExercise>
       </div>
 
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
@@ -533,11 +531,12 @@ export default function ExerciseCard() {
                                   </FormItem>
                                 )}
                               />
-                              {form.formState.isValid && (
-                                <AlertDialogAction type="submit">
-                                  Submit
-                                </AlertDialogAction>
-                              )}
+                              <AlertDialogAction
+                                type="submit"
+                                disabled={!form.formState.isValid}
+                              >
+                                Submit
+                              </AlertDialogAction>
                             </form>
                           </Form>
                         </div>
