@@ -19,7 +19,7 @@ import {
 import ExerciseCard from "@/components/exerciseTracking/exercise-card";
 import WorkoutCard from "@/components/exerciseTracking/workout-card";
 
-export default function ExerciseComponent() {
+export default function ExerciseComponent({ options }: { options: any }) {
   return (
     <div className="flex justify-center mt-10">  
     <Tabs defaultValue="exercises" className="w-full">
@@ -29,12 +29,12 @@ export default function ExerciseComponent() {
       </TabsList>
       <TabsContent value="exercises">
       <div className="w-full h-full"> 
-      <ExerciseCard></ExerciseCard>
+      <ExerciseCard options={options}></ExerciseCard>
       </div>
       </TabsContent>
       <TabsContent value="workouts">
       <div className="w-full h-full"> 
-      <WorkoutCard></WorkoutCard>
+      <WorkoutCard session={options}></WorkoutCard>
       </div>
       </TabsContent>
     </Tabs>

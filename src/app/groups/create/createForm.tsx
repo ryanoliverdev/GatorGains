@@ -75,7 +75,7 @@ export default function CreateGroupForm({ session }: { session: Session }) {
                   <Input placeholder="Group" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public group name. This can't be changed and will be seen by everyone.
+                  This is your public group name. This can&apos;t be changed and will be seen by everyone.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
