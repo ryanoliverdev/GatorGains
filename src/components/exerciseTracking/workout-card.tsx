@@ -38,7 +38,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '../ui/use-toast';
 import { ToastAction } from '@radix-ui/react-toast';
 
@@ -56,6 +56,7 @@ import { Command } from 'cmdk';
 import Select from 'react-select';
 import AutomatedWorkout from '@/components/exerciseTracking/automatedWorkout';
 import { MultiValue, ActionMeta } from 'react-select';
+import { Workout } from '@/components/exerciseTracking/automatedWorkout';
 
 import ValueType from 'react-select';
 const formSchema = z.object({
@@ -64,7 +65,7 @@ const formSchema = z.object({
   })
 });
 
-export default function WorkoutCard() {
+export default function WorkoutCard({ session }: { session: any }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -94,22 +95,6 @@ export default function WorkoutCard() {
     }); // Reset form to blank values
   };
 
-  interface Exercise {
-    exerciseName: string;
-    difficulty: string;
-    type: string;
-    sets: string;
-    duration_reps: string;
-    muscle: string;
-    equipment: string;
-    description: string;
-  }
-
-  interface Workout {
-    name: string;
-    exercises: Exercise[];
-  }
-
   interface SelectedOption {
     value: string;
     label: string;
@@ -132,6 +117,7 @@ export default function WorkoutCard() {
 
   const [selected, setSelected] = useState<SelectedOption[]>([]);
   const [changesMade, setChangesMade] = useState(false);
+  const [userWorkout, setUserWorkout] = useState<Workout[]>([]);
  
 
   const handleSelectChange = (
@@ -143,6 +129,19 @@ export default function WorkoutCard() {
           setChangesMade(true);
       }
   };
+
+  // useEffect(() => {
+  //   const retreiveUserWorkouts = async (userId: string) => {
+  //     try {
+  //       const workouts = await getUserWorkout(userId);
+  //       setUserWorkout(workouts);
+  //     } catch (error) {
+  //       console.error('Failed to retrieve exercises for user', error);
+  //       throw error;
+  //     }
+  //   }
+  //   retreiveUserWorkouts(session.user.id);
+  // }, []);
 
   return (
     <div>

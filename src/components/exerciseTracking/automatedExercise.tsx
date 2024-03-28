@@ -39,16 +39,17 @@ import {
 import { XIcon } from '@heroicons/react/outline';
 import { Icons } from '../ui/icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { createExerciseForUser } from '@/app/exercises/exerciseActions';
 
-interface Exercise {
+export interface Exercise {
   exerciseName: string;
-  difficulty: string;
-  type: string;
-  sets: string;
-  duration_reps: string;
-  muscle: string;
-  equipment: string;
-  description: string;
+  difficulty: string | null;
+  type: string | null;
+  sets: string | null;
+  duration_reps: string | null;
+  muscle: string | null;
+  equipment: string | null;
+  description: string | null;
 }
 
 const FormSchema = z.object({
@@ -57,7 +58,7 @@ const FormSchema = z.object({
   })
 });
 
-export default function AutomatedExercise() {
+export default function AutomatedExercise({ options }: { options: any }) {
   const [isCurrentExercise, setIsCurrentExercise] = useState(false);
   const [currentExercise, setCurrentExercise] = useState<Exercise | null>(null);
   const [isLoading, setisLoading] = useState(false);
@@ -77,7 +78,7 @@ export default function AutomatedExercise() {
 
   //push new exercise to database here
   const saveExercise = () => {
-    console.log(currentExercise);
+    createExerciseForUser(options.user.id, currentExercise!);
 
     setIsCurrentExercise(false);
     setCurrentExercise(null);

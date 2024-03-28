@@ -40,19 +40,9 @@ import {
 import { XIcon } from '@heroicons/react/outline';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Icons } from '../ui/icons';
+import { Exercise } from './automatedExercise';
 
-interface Exercise {
-  exerciseName: string;
-  difficulty: string;
-  type: string;
-  sets: string;
-  duration_reps: string;
-  muscle: string;
-  equipment: string;
-  description: string;
-}
-
-interface Workout {
+export interface Workout {
   name: string;
   exercises: Exercise[];
 }

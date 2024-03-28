@@ -80,11 +80,9 @@ export function ProfileForm({userName, userBio, userId}: {userName: string, user
       }
     });
     toast({
-      title: 'You submitted the following values:',
+      title: 'Success!',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <p>Your profile was succesfully updated!</p>
       )
     });
 
