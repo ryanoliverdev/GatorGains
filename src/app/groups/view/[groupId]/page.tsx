@@ -1,8 +1,5 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/fHR904xfVVE
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
+'use server';
+
 import { AvatarImage, AvatarFallback, Avatar } from '@/components/ui/avatar';
 import {
   CardTitle,
@@ -15,21 +12,60 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { getServerSession } from 'next-auth/next';
+import { prisma } from '@/lib/prisma';
 
-export default function Component() {
+export default async function Component({
+  params
+}: {
+  params: { groupId: string };
+}) {
+  const session = await getServerSession(authOptions);
+
+  async function getGroupInfo() {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: params.groupId
+      },
+      include: {
+        users: {
+          select: {
+            id: true,
+            username: true,
+            xp: true,
+            image: true
+          }
+        }
+      }
+    });
+
+    return group;
+  }
+
+  const groupData = await getGroupInfo();
+
+  if (session === null || groupData === null || groupData.users.length === 0) {
+    return <p>No Access</p>;
+  }
+
+  const totalMembers = groupData.users.length;
+
   return (
-    <div className="container">
+    <div className="container mt-6 mb-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2 gap-2 md:flex-col md:items-start md:gap-4 md:pb-4">
           <div className="flex items-center gap-2">
             <Avatar className="w-10 h-10 border">
               <AvatarImage alt="Avatar" src="/placeholder-user.jpg" />
-              <AvatarFallback>👨🏻</AvatarFallback>
+              <AvatarFallback>{groupData.emojiLogo}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <CardTitle className="text-base font-bold">Designers</CardTitle>
+              <CardTitle className="text-base font-bold">
+                {groupData.name}
+              </CardTitle>
               <CardDescription className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                5 Members
+                {totalMembers} Members
               </CardDescription>
             </div>
           </div>
@@ -44,52 +80,28 @@ export default function Component() {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardContent className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Avatar className="w-10 h-10 border">
-                    <AvatarImage alt="Avatar" src="/placeholder-user.jpg" />
-                    <AvatarFallback>👨🏻</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <CardTitle className="text-sm font-medium">
-                      Alice Freeman
-                    </CardTitle>
-                    <CardDescription className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                      @alicefreeman
-                    </CardDescription>
+            {groupData.users.map((user) => (
+              <Card key={user.id}>
+                <CardContent className="flex flex-col pt-5 gap-2">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="w-10 h-10 border">
+                      <AvatarImage src={user.image || ''} alt="@shadcn" />
+                      <AvatarFallback>
+                        {user.username?.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <CardTitle className="text-sm font-medium">
+                        {user.username}
+                      </CardTitle>
+                      <CardDescription className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                        {user.xp} XP
+                      </CardDescription>
+                    </div>
                   </div>
-                </div>
-                <div className="grid gap-1.5 text-sm">
-                  <div>🎨 120 XP</div>
-                  <div>📝 50 XP</div>
-                  <div>🏆 300 XP</div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Avatar className="w-10 h-10 border">
-                    <AvatarImage alt="Avatar" src="/placeholder-user.jpg" />
-                    <AvatarFallback>👨🏻</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <CardTitle className="text-sm font-medium">
-                      Bob Johnson
-                    </CardTitle>
-                    <CardDescription className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                      @bobjohnson
-                    </CardDescription>
-                  </div>
-                </div>
-                <div className="grid gap-1.5 text-sm">
-                  <div>🎨 200 XP</div>
-                  <div>📝 80 XP</div>
-                  <div>🏆 150 XP</div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
           <Card className="flex-1">
             <CardHeader className="flex items-center h-10 px-4 gap-2 md:h-12 md:gap-4 lg:px-6">

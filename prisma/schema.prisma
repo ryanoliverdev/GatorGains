@@ -61,13 +61,14 @@ model User {
 }
 
 model Group {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  description String?
-  groupXp     Int       @default(0)
-  messages    Message[]
-  users       User[]
-  groupLeaderId String
+  id              String    @id @default(cuid())
+  name            String    @unique
+  emojiLogo       String    @default("🏋️")
+  description     String?
+  groupXp         Int       @default(0)
+  messages        Message[]
+  users           User[]
+  groupLeaderId   String
   groupLeaderName String
 
   @@index([name])
@@ -99,12 +100,12 @@ model Friend {
 }
 
 model Workout {
-  id             String          @id @default(cuid())
-  workoutName    String?         @unique
-  userId         String
-  workoutDate    String          @unique
-  user           User            @relation(fields: [userId], references: [id])
-  ExerciseEntry  ExerciseEntry[]
+  id            String          @id @default(cuid())
+  workoutName   String?         @unique
+  userId        String
+  workoutDate   String          @unique
+  user          User            @relation(fields: [userId], references: [id])
+  ExerciseEntry ExerciseEntry[]
 
   @@index([userId])
 }

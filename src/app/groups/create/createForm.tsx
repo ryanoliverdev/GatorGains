@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { getServerSession } from 'next-auth/next';
 import { Session } from 'next-auth';
@@ -24,6 +24,7 @@ import { toast } from '@/components/ui/use-toast';
 import { prisma } from '@/lib/prisma';
 import { redirect, useRouter } from 'next/navigation';
 import { createGroup } from '../groupActions';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const profileFormSchema = z.object({
   username: z
@@ -35,18 +36,21 @@ const profileFormSchema = z.object({
       message: 'Username must not be longer than 30 characters.'
     }),
 
-  bio: z.string().max(160).min(4)
+  bio: z.string().max(160).min(4),
+  emoji: z.string().min(1, {
+    message: 'Please select an emoji.'
+  })
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
-
 
 export default function CreateGroupForm({ session }: { session: Session }) {
   const user = session.user;
 
   const defaultValues: Partial<ProfileFormValues> = {
     bio: '',
-    username: ''
+    username: '',
+    emoji: ''
   };
 
   const form = useForm<ProfileFormValues>({
@@ -56,9 +60,9 @@ export default function CreateGroupForm({ session }: { session: Session }) {
   });
 
   async function onSubmit(data: ProfileFormValues) {
-    const { bio, username } = data;
+    const { bio, username, emoji } = data;
 
-    createGroup(username, bio, user.id)
+    createGroup(username, bio, emoji, user.id);
   }
 
   return (
@@ -75,13 +79,47 @@ export default function CreateGroupForm({ session }: { session: Session }) {
                   <Input placeholder="Group" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public group name. This can&apos;t be changed and will be seen by everyone.
+                  This is your public group name. This can&apos;t be changed and
+                  will be seen by everyone.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="emoji"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Group Logo</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a group emoji to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="🏋️">🏋️</SelectItem>
+                    <SelectItem value="💪">💪</SelectItem>
+                    <SelectItem value="💯">💯</SelectItem>
+                    <SelectItem value="🔥">🔥</SelectItem>
+                    <SelectItem value="👌">👌</SelectItem>
+                    <SelectItem value="⚡">⚡</SelectItem>
+                    <SelectItem value="💸">💸</SelectItem>
+                    <SelectItem value="🧗‍♀️">🧗‍♀️</SelectItem>
+                    <SelectItem value="🏃">🏃</SelectItem>
+                    <SelectItem value="🌊">🌊</SelectItem>
 
+
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="bio"
