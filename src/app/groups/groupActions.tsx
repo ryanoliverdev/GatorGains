@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 // Server Action
 export async function createGroup(
@@ -43,10 +43,10 @@ export async function createGroup(
     }
   });
 
-  redirect('/dashboard');
+  redirect(`/groups/view/${updatedGroup.id}`);
 }
 
-export async function joinGroup (groupId: string, userId: string) {
+export async function joinGroup(groupId: string, userId: string) {
   // Join a group
   const findGroup = await prisma.group.findUnique({
     where: {
@@ -70,4 +70,37 @@ export async function joinGroup (groupId: string, userId: string) {
   });
 
   redirect(`/groups/view/${groupId}`);
+}
+
+export async function sendMessage(
+  groupId: string,
+  userId: string,
+  message: string
+) {
+  // Send a message to a group
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: userId
+    }
+  });
+
+  if(findUser === null || findUser.username === null) return redirect('/');
+
+  const findGroup = await prisma.group.findUnique({
+    where: {
+      id: groupId
+    }
+  });
+
+  if (findGroup === null) return redirect('/');
+
+  await prisma.message.create({
+    data: {
+      content: message,
+      groupId: groupId,
+      userId: userId,
+      usersName: findUser.username
+    }
+  });
 }
