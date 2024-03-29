@@ -98,7 +98,7 @@ export default function WorkoutCard({ session }: { session: any }) {
   interface SelectedOption {
     value: string;
     label: string;
-}
+  }
 
   const handleEditClick = (workout: Workout) => {
     form.reset({
@@ -118,16 +118,18 @@ export default function WorkoutCard({ session }: { session: any }) {
   const [selected, setSelected] = useState<SelectedOption[]>([]);
   const [changesMade, setChangesMade] = useState(false);
   const [userWorkout, setUserWorkout] = useState<Workout[]>([]);
- 
 
   const handleSelectChange = (
-      newValue: MultiValue<{ value: string; label: string; }>,
-      actionMeta: ActionMeta<{ value: string; label: string; }>
+    newValue: MultiValue<{ value: string; label: string }>,
+    actionMeta: ActionMeta<{ value: string; label: string }>
   ) => {
-      if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value') {
-          setSelected(newValue as SelectedOption[]);
-          setChangesMade(true);
-      }
+    if (
+      actionMeta.action === 'select-option' ||
+      actionMeta.action === 'remove-value'
+    ) {
+      setSelected(newValue as SelectedOption[]);
+      setChangesMade(true);
+    }
   };
 
   // useEffect(() => {
@@ -153,51 +155,56 @@ export default function WorkoutCard({ session }: { session: any }) {
           >
             Create New Custom Workout
           </AlertDialogTrigger>
-          <AlertDialogContent>
-            <div className="flex items-center justify-end">
-              <AlertDialogCancel>
-                <div onClick={handleExitClick}>
-                  <XIcon className="w-4 h-4" />
-                </div>
-              </AlertDialogCancel>
-            </div>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmitCustom)}
-                className="space-y-1"
-              >
-                <FormField
-                  control={form.control}
-                  name="workoutName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Workout Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Workout Name" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        (your name for the exercise){' '}
-                        <span className="text-red-600">(required)</span>
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="h-96">
-                  <h1>Select Exercises in Workout</h1>
-                  <Select
-                    options={options}
-                    isMulti
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={handleSelectChange}
+          <AlertDialogContent className="h-2/5">
+            <ScrollArea>
+              <div className="flex items-center justify-end">
+                <AlertDialogCancel>
+                  <div onClick={handleExitClick}>
+                    <XIcon className="w-4 h-4" />
+                  </div>
+                </AlertDialogCancel>
+              </div>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmitCustom)}
+                  className="space-y-1"
+                >
+                  <FormField
+                    control={form.control}
+                    name="workoutName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Workout Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Workout Name" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          (your name for the exercise){' '}
+                          <span className="text-red-600">(required)</span>
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                {form.formState.isValid && changesMade && (
-                  <AlertDialogAction type="submit">Submit</AlertDialogAction>
-                )}
-              </form>
-            </Form>
+                  <div className="">
+                    <h1>Select Exercises in Workout</h1>
+                    <Select
+                      options={options}
+                      isMulti
+                      className="basic-multi-select mb-12"
+                      classNamePrefix="select"
+                      onChange={handleSelectChange}
+                    />
+                  </div>
+                  <AlertDialogAction
+                    type="submit"
+                    disabled={!form.formState.isValid || !changesMade}
+                  >
+                    Submit
+                  </AlertDialogAction>
+                </form>
+              </Form>
+            </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
         <AutomatedWorkout></AutomatedWorkout>
@@ -264,7 +271,7 @@ export default function WorkoutCard({ session }: { session: any }) {
                               )}
                             />
 
-                            <div className="h-96">
+                            <div className="">
                               <h1>Select Exercises in Workout</h1>
 
                               <Select
@@ -281,11 +288,12 @@ export default function WorkoutCard({ session }: { session: any }) {
                                 )}
                               />
                             </div>
-                            {form.formState.isValid && changesMade && (
-                              <AlertDialogAction type="submit">
-                                Submit
-                              </AlertDialogAction>
-                            )}
+                            <AlertDialogAction
+                              type="submit"
+                              disabled={!form.formState.isValid || !changesMade}
+                            >
+                              Submit
+                            </AlertDialogAction>
                           </form>
                         </Form>
                       </AlertDialogContent>

@@ -174,8 +174,8 @@ export default function ExerciseCard({ options }: { options: any }) {
           >
             Create New Custom Exercise
           </AlertDialogTrigger>
-          <AlertDialogContent >
-            <ScrollArea className=" h-[800px] sm:h-[850px] w-full rounded-md border">
+          <AlertDialogContent className="h-4/5">
+            <ScrollArea className="  w-full rounded-md ">
               <div className="my-12">
                 <div className="flex items-center justify-end">
                   <AlertDialogCancel>
@@ -336,11 +336,12 @@ export default function ExerciseCard({ options }: { options: any }) {
                         </FormItem>
                       )}
                     />
-                    {form.formState.isValid && (
-                      <AlertDialogAction type="submit">
-                        Submit
-                      </AlertDialogAction>
-                    )}
+                    <AlertDialogAction
+                      type="submit"
+                      disabled={!form.formState.isValid}
+                    >
+                      Submit
+                    </AlertDialogAction>
                   </form>
                 </Form>
               </div>
@@ -562,11 +563,12 @@ export default function ExerciseCard({ options }: { options: any }) {
                                   </FormItem>
                                 )}
                               />
-                              {form.formState.isValid && (
-                                <AlertDialogAction type="submit">
-                                  Submit
-                                </AlertDialogAction>
-                              )}
+                              <AlertDialogAction
+                                type="submit"
+                                disabled={!form.formState.isValid}
+                              >
+                                Submit
+                              </AlertDialogAction>
                             </form>
                           </Form>
                         </div>
