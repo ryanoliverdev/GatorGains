@@ -27,13 +27,13 @@ import { createGroup } from '../groupActions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const profileFormSchema = z.object({
-  username: z
+  group: z
     .string()
     .min(2, {
-      message: 'Username must be at least 2 characters.'
+      message: 'Group must be at least 2 characters.'
     })
     .max(30, {
-      message: 'Username must not be longer than 30 characters.'
+      message: 'Group must not be longer than 30 characters.'
     }),
 
   bio: z.string().max(160).min(4),
@@ -49,7 +49,7 @@ export default function CreateGroupForm({ session }: { session: Session }) {
 
   const defaultValues: Partial<ProfileFormValues> = {
     bio: '',
-    username: '',
+    group: '',
     emoji: ''
   };
 
@@ -60,9 +60,9 @@ export default function CreateGroupForm({ session }: { session: Session }) {
   });
 
   async function onSubmit(data: ProfileFormValues) {
-    const { bio, username, emoji } = data;
+    const { bio, group, emoji } = data;
 
-    createGroup(username, bio, emoji, user.id);
+    createGroup(group, bio, emoji, user.id);
   }
 
   return (
@@ -71,7 +71,7 @@ export default function CreateGroupForm({ session }: { session: Session }) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="group"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Group Name</FormLabel>
