@@ -3,15 +3,19 @@ import { CardHeader, CardContent, Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default async function SummaryCard({ options }: { options: any }) {
-  function getGreeting() {
+
+
+  /*function getGreeting() {
     const hour = new Date().getHours();
+    console.log("Current hour:",);
     if (hour < 12) return 'Good morning';
     if (hour < 18) return 'Good afternoon';
     if (hour < 20) return 'Good evening';
     return 'Hello';
-  }
+  }*/
 
   function getCurrentDateTime() {
+    
     const now = new Date();
 
     const options: Intl.DateTimeFormatOptions = {
@@ -51,7 +55,7 @@ export default async function SummaryCard({ options }: { options: any }) {
         <CardHeader className="flex justify-center">
           <div className="space-y-2 text-center">
             <h1 className="text-lg font-bold">
-              {getGreeting()}, {options.user.name}!
+              Hello, {options.user.name}!
             </h1>
             <p className="text-xs leading-none">You look great today</p>
           </div>
@@ -74,13 +78,16 @@ export default async function SummaryCard({ options }: { options: any }) {
         <span className="text-sm font-medium">Calories Burned</span>
         <span className="text-2xl font-extrabold">780</span>
       </div>
-    </div>
-    <div className="flex justify-center"> 
+    <div className="flex flex-col items-center justify-center space-y-2">
+        <span className="text-sm font-medium">XP</span>
+        <span className="text-2xl font-extrabold">20</span>
+      </div>
       <div className="flex flex-col items-center justify-center space-y-2">
         <span className="text-sm font-medium">Streak (Days)</span>
         <span className="text-2xl font-extrabold">5🔥</span>
       </div>
-    </div>
+      </div>
+      
   </CardContent>
 </div>
 
