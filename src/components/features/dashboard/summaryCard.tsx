@@ -60,7 +60,7 @@ export default async function SummaryCard({ options }: { options: any }) {
       <div className="flex justify-center items-center">
   <CardContent className="space-y-4 mt-4">
     <div className="space-y-2">
-      <h2 className="text-base text-center font-bold">Today's Summary</h2>
+      <h2 className="text-base text-center font-bold">Today&apos;s Summary</h2>
       <p className="text-xs text-center leading-none">
         {getCurrentDateTime()}
       </p>

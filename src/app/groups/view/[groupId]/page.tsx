@@ -38,7 +38,8 @@ export default async function Component({
           select: {
             usersName: true,
             content: true,
-            createdAt: true
+            createdAt: true,
+            id: true
           }
         },
         users: {
@@ -124,7 +125,7 @@ export default async function Component({
               <ScrollArea className='h-[500px]'>
                 <CardContent className="flex flex-col gap-4 p-4 text-sm">
                   {groupData.messages.reverse().map((message) => (
-                    <div className="flex items-start gap-4">
+                    <div key={message.id} className="flex items-start gap-4">
                       <Avatar className="w-8 h-8">
                         <AvatarImage alt="logo" src="" />
                         <AvatarFallback>
