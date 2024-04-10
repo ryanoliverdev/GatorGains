@@ -54,6 +54,7 @@ import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
 import { getUserExercises } from '@/app/exercises/exerciseActions';
 import { Exercise } from '@/components/exerciseTracking/automatedExercise';
 import { createExerciseForUser, editExerciseForUser, deleteExerciseForUser, getExerciseByName } from '@/app/exercises/exerciseActions';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   exerciseName: z.string().min(1, {
@@ -74,6 +75,7 @@ export default function ExerciseCard({ options }: { options: any }) {
     null
   );
   const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,7 +102,8 @@ export default function ExerciseCard({ options }: { options: any }) {
       equipment: values.equipment !== undefined ? values.equipment : null, 
       description: values.description !== undefined ? values.description : null,
     };
-    createExerciseForUser(options.user.id, exerciseValues);
+    await createExerciseForUser(options.user.id, exerciseValues);
+    router.refresh();
 
     console.log(values);
   }
@@ -116,8 +119,8 @@ export default function ExerciseCard({ options }: { options: any }) {
       equipment: values.equipment !== undefined ? values.equipment : null, 
       description: values.description !== undefined ? values.description : null,
     };
-    editExerciseForUser(options.user.id, selectedExerciseId!, exerciseValues);
-
+    await editExerciseForUser(options.user.id, selectedExerciseId!, exerciseValues);
+    router.refresh();
     console.log(values);
   }
 
@@ -150,6 +153,13 @@ export default function ExerciseCard({ options }: { options: any }) {
       description: exercise.description!
     }); // Update default values for the form
   };
+
+  const handleDeleteClick = async (exercise: Exercise) => {
+    const currExercise = await getExerciseByName(options.user.id, exercise.exerciseName!);
+    await deleteExerciseForUser(currExercise!.id!);
+    router.refresh();
+  }
+
 
   useEffect(() => {
     const retreiveUserExercises = async (userId: string) => {
@@ -576,7 +586,9 @@ export default function ExerciseCard({ options }: { options: any }) {
                     </AlertDialogContent>
                   </AlertDialog>
                   <AlertDialog>
-                    <AlertDialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 mx-2 rounded-lg inline-block px-4 py-2">
+                    <AlertDialogTrigger 
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 mx-2 rounded-lg inline-block px-4 py-2"
+                    >
                       Delete
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -590,7 +602,7 @@ export default function ExerciseCard({ options }: { options: any }) {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => handleDeleteClick(exercise)}>Continue</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
