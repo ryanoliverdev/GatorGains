@@ -1,3 +1,5 @@
+"use server"
+
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,7 +11,7 @@ import MainDiet from '@/components/dietTracking/mainDiet';
 export default async function DietTracking() {
 
   return (
-    <div className="container">
+    <div className="sm:container mx-2">
         <MainDiet></MainDiet>
     </div>
   );

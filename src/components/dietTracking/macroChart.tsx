@@ -13,7 +13,7 @@ export default class MacroChart extends PureComponent<MacroChartProps> {
 
     return (
       <ResponsiveContainer height="100%" width="100%">
-        <PieChart width={350} height={350}>
+        <PieChart width={400} height={400}>
           <Pie
             dataKey="value"
             data={macros}

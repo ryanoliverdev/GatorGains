@@ -176,7 +176,7 @@ export default function DietDrawer({
             </div>
             <div className="mt-6 h-[25px]">
               <div className="text-[0.70rem] text-center uppercase text-muted-foreground">
-                {calories} calories per {parseFloat(servingSize.toFixed(2))}{' '}
+                1 serving is {calories} calories per {parseFloat(servingSize.toFixed(2))}{' '}
                 {servingUnit}
               </div>
             </div>
