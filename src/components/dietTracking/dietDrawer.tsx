@@ -35,17 +35,20 @@ export default function DietDrawer({
   const getLogForUser = async () => {
     try {
       const formattedDate = format(new Date(), 'MM-dd-yyyy');
-      const response = await fetch(`/api/foodLog/${options.user.email}?date=${formattedDate}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `/api/foodLog/${options.user.email}?date=${formattedDate}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
       return response;
     } catch (error: any) {
       console.error(error.message);
     }
-  }
+  };
   const [isLoading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -75,7 +78,6 @@ export default function DietDrawer({
         })
       });
 
-      
       setLoading(false);
       setOpen(false);
 
@@ -85,30 +87,39 @@ export default function DietDrawer({
     } catch (error: any) {
       console.error(error.message);
     }
-
   };
 
   const [modifiedCals, setCalories] = React.useState(0);
+  const [totalServings, setTotalServings] = React.useState(1);
   const [modifiedServingSize, setServingSize] = React.useState(0);
   const [customCals, setCustomCals] = React.useState(0);
 
   function onClick(adjustment: number) {
+    if (adjustment < 0) {
+      setTotalServings(totalServings - 1);
+    } else if (adjustment > 0) {
+      setTotalServings(totalServings + 1);
+    }
     const newVal = adjustment + modifiedServingSize;
-    setServingSize(newVal);
-    setCalories(customCals * newVal);
+    setServingSize(parseFloat(newVal.toFixed(2)));
+    setCalories(Math.ceil((newVal / servingSize) * calories));
   }
 
   React.useEffect(() => {
-    setCalories(Math.ceil(calories));
-    setServingSize(servingSize);
-    setCustomCals(Math.ceil(calories));
-
-    if (servingSize !== 1) {
+    if (servingSize === 1) {
+      setCustomCals(Math.ceil(calories));
+      setCalories(Math.ceil(calories));
+      setServingSize(parseFloat(servingSize.toFixed(2)));
+    } else if (servingSize > 1) {
+      setCustomCals(Math.ceil(calories / servingSize));
+      setCalories(Math.ceil(calories));
+      setServingSize(parseFloat(servingSize.toFixed(2)));
+    } else if (servingSize < 1) {
       setCustomCals(Math.ceil(calories));
       setCalories(Math.ceil(calories));
       setServingSize(parseFloat(servingSize.toFixed(2)));
     }
-  }, [servingSize]);
+  }, [calories, servingSize]);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -139,15 +150,15 @@ export default function DietDrawer({
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(-1)}
-                disabled={modifiedServingSize <= 1}
+                onClick={() => onClick(-parseFloat(servingSize.toFixed(2)))}
+                disabled={modifiedServingSize <= 0}
               >
                 <Minus className="h-4 w-4" />
                 <span className="sr-only">Decrease</span>
               </Button>
               <div className="flex-1 text-center">
                 <div className="text-6xl font-bold tracking-tighter">
-                  {modifiedServingSize}
+                  {totalServings}
                 </div>
                 <div className="text-[0.70rem] uppercase text-muted-foreground">
                   Serving Size
@@ -157,16 +168,16 @@ export default function DietDrawer({
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(1)}
+                onClick={() => onClick(parseFloat(servingSize.toFixed(2)))}
               >
                 <Plus className="h-4 w-4" />
                 <span className="sr-only">Increase</span>
               </Button>
-              
             </div>
             <div className="mt-6 h-[25px]">
               <div className="text-[0.70rem] text-center uppercase text-muted-foreground">
-                {customCals} calories per 1 {servingUnit}
+                1 serving is {calories} calories per {parseFloat(servingSize.toFixed(2))}{' '}
+                {servingUnit}
               </div>
             </div>
           </div>
@@ -174,13 +185,13 @@ export default function DietDrawer({
             {isLoading ? (
               <Button
                 disabled={isLoading}
-                onClick={() => logBrandedFood(foodId, modifiedServingSize)}
+                onClick={() => logBrandedFood(foodId, totalServings)}
               >
                 Adding... <ReloadIcon className="ml-2 h-4 w-4 animate-spin" />{' '}
               </Button>
             ) : (
               <Button
-                onClick={() => logBrandedFood(foodId, modifiedServingSize)}
+                onClick={() => logBrandedFood(foodId, totalServings)}
               >
                 Add Item
               </Button>

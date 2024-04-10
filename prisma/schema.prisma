@@ -47,6 +47,9 @@ model User {
   image              String?
   bio                String?
   dailyCalorieIntake Int            @default(2000)
+  dailyProteinPercentage Int       @default(30)
+  dailyCarbsPercentage Int         @default(50)
+  dailyFatPercentage Int           @default(20)
   streak             Int            @default(0)
   xp                 Int            @default(0)
   groups             Group[]

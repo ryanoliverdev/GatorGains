@@ -11,8 +11,8 @@ export default async function ProgressBar({ id }: { id: string }) {
   const calInfo = await getCalorieInfo(id);
 
   return (
-    <div className="flex flex-col mt-1 gap-">
-      <Progress
+    <div className="flex flex-col mt-1">
+      <Progress indicatorColor="bg-blue-500"
         value={Math.min(
           (calInfo.totalFoodCalories / calInfo.userDailyCalories) * 100,
           100

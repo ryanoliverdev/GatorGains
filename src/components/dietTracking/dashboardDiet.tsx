@@ -21,7 +21,8 @@ export default async function DashboardDiet() {
         <CardTitle className="text-center mt-6">Today&apos;s Foods</CardTitle>
         <div>
           <div className="mt-6 flex items-center gap-6 mb-4">
-            <Progress
+            <Progress 
+              indicatorColor="bg-blue-500"
               value={Math.min(
                 (calInfo.totalFoodCalories / calInfo.userDailyCalories) * 100,
                 100
