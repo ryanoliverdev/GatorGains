@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow
 } from '../ui/table';
-import { removeFoodFromUser } from './dietFunctions';
+import { changeMacroPercentages, removeFoodFromUser } from './dietFunctions';
 import MacroChart from './macroChart';
 import { useState } from 'react';
 import { set } from 'date-fns';
@@ -34,7 +34,7 @@ import MacroProgress from './macroProgressBar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { Label } from 'recharts';
+import { Label } from '../ui/label';
 
 interface FoodItem {
   id: string;
@@ -54,12 +54,16 @@ export default function TopComponent({
   macros,
   foods,
   calInfo,
-  userDailyCalories
+  userDailyCalories,
+  userId,
+  macroPercentages
 }: {
   macros: Macros[];
   foods: FoodItem[];
   calInfo: number;
   userDailyCalories: number;
+  userId: string;
+  macroPercentages: any;
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
@@ -78,18 +82,38 @@ export default function TopComponent({
     setLoadId('');
   };
 
-  const [newProteinPercentage, setNewProteinPercentage] = useState(0);
-  const [newCarbPercentage, setNewCarbPercentage] = useState(0);
-  const [newFatPercentage, setNewFatPercentage] = useState(0);
+  console.log(macroPercentages);
+
+  const [newProteinPercentage, setNewProteinPercentage] = useState(
+    macroPercentages.dailyProteinPercentage
+  );
+  const [newCarbPercentage, setNewCarbPercentage] = useState(
+    macroPercentages.dailyCarbsPercentage
+  );
+  const [newFatPercentage, setNewFatPercentage] = useState(
+    macroPercentages.dailyFatPercentage
+  );
+  const [isError, setIsError] = useState(false);
 
   async function changePercentages(
     newCarbPercentage: number,
     newProteinPercentage: number,
     newFatPercentage: number
   ) {
-    await 
-  }
+    if (newCarbPercentage + newProteinPercentage + newFatPercentage !== 100) {
+      setIsError(true);
+      return;
+    }
+    setIsError(false);
 
+    await changeMacroPercentages(
+      userId,
+      newCarbPercentage,
+      newProteinPercentage,
+      newFatPercentage
+    );
+    await router.refresh();
+  }
 
   return (
     <Accordion type="single" className="mt-4" collapsible>
@@ -108,15 +132,17 @@ export default function TopComponent({
                 <div className="flex flex-col w-full font-semibold gap-1">
                   {macros.map((macro) => (
                     <MacroProgress
+                      totalEaten={calInfo}
                       key={macro.name}
                       type={macro.name}
                       dailyCals={userDailyCalories}
                       amount={macro.value}
+                      macroInfo={macroPercentages}
                     />
                   ))}
                 </div>
               </CardContent>
-              <CardFooter className='flex justify-center'>
+              <CardFooter className="flex justify-center">
                 <Popover>
                   <PopoverTrigger className="underline text-blue-500">
                     Click or tap to modify macro percentages.
@@ -124,46 +150,63 @@ export default function TopComponent({
                   <PopoverContent className="w-64">
                     <div className="grid gap-4">
                       <div className="space-y-2">
-                        <h4 className="font-medium leading-none">Macro Information</h4>
+                        <h4 className="font-medium leading-none">
+                          Macro Information
+                        </h4>
                         <p className="text-sm text-muted-foreground">
                           Change your daily macro goals.
                         </p>
                       </div>
-                      <div className="grid gap-2">
-                        <div className="grid items-center gap-4">
-                          <Label>Protein</Label>
+                      <div className="grid">
+                        <div className="flex flex-col gap-2">
+                          <Label htmlFor="setProtein">Protein</Label>
                           <Input
                             onChange={(e) =>
                               setNewProteinPercentage(parseInt(e.target.value))
                             }
                             type="number"
                             id="setProtein"
-                            defaultValue={calInfo}
+                            defaultValue={
+                              macroPercentages.dailyProteinPercentage
+                            }
                             className="col-span-2 h-8"
                           />
+                          <Label htmlFor="setCarbs">Carbs</Label>
                           <Input
                             onChange={(e) =>
                               setNewCarbPercentage(parseInt(e.target.value))
                             }
                             type="number"
                             id="setCarbs"
-                            defaultValue={calInfo}
+                            defaultValue={macroPercentages.dailyCarbsPercentage}
                             className="col-span-2 h-8"
                           />
+                          <Label htmlFor="setFat">Fat</Label>
                           <Input
                             onChange={(e) =>
                               setNewFatPercentage(parseInt(e.target.value))
                             }
                             type="number"
                             id="setFat"
-                            defaultValue={calInfo}
+                            defaultValue={macroPercentages.dailyFatPercentage}
                             className="col-span-2 h-8"
                           />
                           <Button
-                            onClick={async (e) => changePercentages(newCarbPercentage, newProteinPercentage, newFatPercentage)}
+                            onClick={async (e) =>
+                              changePercentages(
+                                newCarbPercentage,
+                                newProteinPercentage,
+                                newFatPercentage
+                              )
+                            }
                           >
-                            Update Calories
+                            Update Macros
                           </Button>
+                          {isError && (
+                            <p className="font-bold text-red-500 w-full">
+                              Percentages must add up to 100!
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -174,7 +217,7 @@ export default function TopComponent({
             <Card className="w-fit sm:w-full">
               <CardTitle className="text-center mt-6">Added Foods</CardTitle>
               <CardContent className="w-full pt-5">
-                <ScrollArea className="h-[352px] rounded-md ">
+                <ScrollArea className="h-[396px] rounded-md ">
                   <Table>
                     <TableHeader>
                       <TableRow>

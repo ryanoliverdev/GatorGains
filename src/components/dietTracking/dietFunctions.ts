@@ -7,7 +7,7 @@ export default async function getCalorieInfo(retId: string) {
   const userCalories = await prisma.user.findUnique({
     where: {
       id: retId
-    },
+    }
   });
 
   var totalCalories = 0;
@@ -41,7 +41,10 @@ export default async function getCalorieInfo(retId: string) {
     return { userDailyCalories: 0, totalFoodCalories: totalCalories };
   }
 
-  return { userDailyCalories: userCalories.dailyCalorieIntake, totalFoodCalories: totalCalories };
+  return {
+    userDailyCalories: userCalories.dailyCalorieIntake,
+    totalFoodCalories: totalCalories
+  };
 }
 
 export async function getMacroInfo(retId: string) {
@@ -153,4 +156,37 @@ export async function changeCalories(userId: string, newCalories: number) {
   return true;
 }
 
-export async function
+export async function changeMacroPercentages(
+  userId: string,
+  newCarbPercentage: number,
+  newProteinPercentage: number,
+  newFatPercentage: number
+) {
+  const newChange = await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      dailyCarbsPercentage: newCarbPercentage,
+      dailyProteinPercentage: newProteinPercentage,
+      dailyFatPercentage: newFatPercentage
+    }
+  });
+
+  return true;
+}
+
+export async function getMacroPercentages(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      dailyCarbsPercentage: true,
+      dailyProteinPercentage: true,
+      dailyFatPercentage: true
+    }
+  });
+
+  return user;
+}
