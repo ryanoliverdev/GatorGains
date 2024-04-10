@@ -41,6 +41,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Icons } from '../ui/icons';
 import { Exercise } from './automatedExercise';
+import { saveWorkoutForUser } from '@/app/exercises/exerciseActions';
 
 export interface Workout {
   name: string;
@@ -53,7 +54,7 @@ const FormSchema = z.object({
   })
 });
 
-export default function AutomatedWorkout() {
+export default function AutomatedWorkout({ session }: { session: any }) {
   const [isCurrentWorkout, setIsCurrentWorkout] = useState(false);
   const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [isLoading, setisLoading] = useState(false);
@@ -73,7 +74,7 @@ export default function AutomatedWorkout() {
 
   //push new exercise to database here
   const saveWorkout = () => {
-    console.log(currentWorkout);
+    saveWorkoutForUser(session.user.id, currentWorkout)
 
     setIsCurrentWorkout(false);
     setCurrentWorkout(null);

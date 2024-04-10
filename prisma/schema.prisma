@@ -107,7 +107,7 @@ model Workout {
   id            String          @id @default(cuid())
   workoutName   String?         @unique
   userId        String
-  workoutDate   String          @unique
+  workoutDate   String
   user          User            @relation(fields: [userId], references: [id])
   ExerciseEntry ExerciseEntry[]
 
