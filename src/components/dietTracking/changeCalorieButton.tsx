@@ -30,7 +30,7 @@ export default function ChangeCalorieButton({
   }, [calInfo]);
 
   return (
-    <div className="flex flex-row font-semibold w-[270px] gap-2">
+    <div className="flex flex-row font-semibold w-[300px] gap-2">
       {totalCals} /
       <Popover>
         <PopoverTrigger className="underline text-blue-500">
@@ -49,6 +49,8 @@ export default function ChangeCalorieButton({
                 <Input
                   onChange={(e) => setModifiedCals(parseInt(e.target.value))}
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   id="setCalories"
                   defaultValue={calInfo}
                   className="col-span-2 h-8"
@@ -61,7 +63,7 @@ export default function ChangeCalorieButton({
           </div>
         </PopoverContent>
       </Popover>
-       Calories
+      Calories
     </div>
   );
 }
