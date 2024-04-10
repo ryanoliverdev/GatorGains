@@ -69,9 +69,6 @@ export function ProfileForm({userName, userBio, userId}: {userName: string, user
   async function onSubmit(data: ProfileFormValues) {
     const { bio, username } = data;
 
-    console.log(data)
-    console.log(userId)
-
     const res = await fetch('/api/user', {
       method: 'PUT',
       body: JSON.stringify({ userId, username, bio }),

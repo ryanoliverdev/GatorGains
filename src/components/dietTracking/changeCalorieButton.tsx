@@ -30,9 +30,9 @@ export default function ChangeCalorieButton({
   }, [calInfo]);
 
   return (
-    <div className="flex flex-row font-semibold w-[300px] gap-2">
-      {totalCals} /
+    <div className="flex flex-row font-semibold  min-w-[180px] gap-2">
       <Popover>
+      {totalCals} /
         <PopoverTrigger className="underline text-blue-500">
           {modifiedCals}
         </PopoverTrigger>

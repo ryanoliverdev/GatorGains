@@ -68,7 +68,6 @@ export async function PUT(req: Request) {
       bio: string | undefined;
     };
 
-    console.log(userId, username, bio);
 
     const updateUser = await prisma.user.update({
       where: {
@@ -93,7 +92,6 @@ export async function PUT(req: Request) {
       );
     }
   } catch (error: any) {
-    console.log(error);
     return new NextResponse(
       JSON.stringify({
         status: 'error',
