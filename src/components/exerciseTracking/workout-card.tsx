@@ -49,14 +49,13 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import workoutData from '@/components/exerciseTracking/workoutData';
-import exerciseData from '@/components/exerciseTracking/exerciseData';
 import { XIcon } from '@heroicons/react/outline';
 import { Command } from 'cmdk';
 import Select from 'react-select';
 import AutomatedWorkout from '@/components/exerciseTracking/automatedWorkout';
 import { MultiValue, ActionMeta } from 'react-select';
 import { Workout } from '@/components/exerciseTracking/automatedWorkout';
+import { getAllWorkouts, saveCustomWorkout } from '@/app/exercises/exerciseActions';
 
 import ValueType from 'react-select';
 const formSchema = z.object({
@@ -74,10 +73,13 @@ export default function WorkoutCard({ session }: { session: any }) {
   });
 
   async function onSubmitCustom(values: z.infer<typeof formSchema>) {
-    //post new exercises here
-
-    console.log(values);
-    console.log(selected);
+    const workoutDetails = {
+      workoutName: values.workoutName,
+      exercises: selected.map(ex => ({
+        exerciseName: ex.label
+      }))
+    };
+    saveCustomWorkout(session.user.id, workoutDetails);
     setChangesMade(false);
   }
 
@@ -100,7 +102,7 @@ export default function WorkoutCard({ session }: { session: any }) {
     label: string;
   }
 
-  const handleEditClick = (workout: Workout) => {
+  const handleEditClick = (workout: any) => {
     form.reset({
       workoutName: workout.name
     }); // Update default values for the form
@@ -110,14 +112,16 @@ export default function WorkoutCard({ session }: { session: any }) {
     setChangesMade(false);
   };
 
-  const options = exerciseData.exercises.map((exercise) => ({
-    value: exercise.exerciseName,
-    label: exercise.exerciseName
-  }));
-
   const [selected, setSelected] = useState<SelectedOption[]>([]);
   const [changesMade, setChangesMade] = useState(false);
-  const [userWorkout, setUserWorkout] = useState<Workout[]>([]);
+  const [userWorkout, setUserWorkout] = useState<any[]>([]);
+
+  const options = userWorkout.flatMap((workout) =>
+    workout.ExerciseEntry.map((exercise: any) => ({
+      value: exercise.exerciseName,
+      label: exercise.exerciseName,
+    }))
+  );
 
   const handleSelectChange = (
     newValue: MultiValue<{ value: string; label: string }>,
@@ -132,18 +136,18 @@ export default function WorkoutCard({ session }: { session: any }) {
     }
   };
 
-  // useEffect(() => {
-  //   const retreiveUserWorkouts = async (userId: string) => {
-  //     try {
-  //       const workouts = await getUserWorkout(userId);
-  //       setUserWorkout(workouts);
-  //     } catch (error) {
-  //       console.error('Failed to retrieve exercises for user', error);
-  //       throw error;
-  //     }
-  //   }
-  //   retreiveUserWorkouts(session.user.id);
-  // }, []);
+  useEffect(() => {
+    const retreiveUserWorkouts = async (userId: string) => {
+      try {
+        const workouts = await getAllWorkouts(userId);
+        setUserWorkout(workouts);
+      } catch (error) {
+        console.error('Failed to retrieve exercises for user', error);
+        throw error;
+      }
+    }
+    retreiveUserWorkouts(session.user.id);
+  }, []);
 
   return (
     <div>
@@ -207,14 +211,14 @@ export default function WorkoutCard({ session }: { session: any }) {
             </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
-        <AutomatedWorkout></AutomatedWorkout>
+        <AutomatedWorkout session={session}></AutomatedWorkout>
       </div>
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
         Your Workouts
       </h1>
       <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border ">
         <Accordion type="single" collapsible className="w-full">
-          {workoutData.map((workout, index) => (
+          {userWorkout.map((workout, index) => (
             <div key={index} className="my-2 sm:m-auto">
               <AccordionItem
                 className="mt-0"
@@ -223,9 +227,9 @@ export default function WorkoutCard({ session }: { session: any }) {
               >
                 <div className="flex flex-row justify-between">
                   <AccordionTrigger
-                    className={`overflow-hidden ${workout.name.length > 20 && !/\s/.test(workout.name) ? 'break-all' : ''} w-40 sm:w-auto`}
+                    className={`overflow-hidden ${workout.workoutName!.length > 20 && !/\s/.test(workout.workoutName!) ? 'break-all' : ''} w-40 sm:w-auto`}
                   >
-                    {workout.name}
+                    {workout.workoutName}
                   </AccordionTrigger>
                   <div className="flex flex-row">
                     <AlertDialog>
@@ -280,8 +284,8 @@ export default function WorkoutCard({ session }: { session: any }) {
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                                 onChange={handleSelectChange}
-                                defaultValue={workout.exercises.map(
-                                  (exercise) => ({
+                                defaultValue={workout!.ExerciseEntry.map(
+                                  (exercise: { exerciseName: any; }) => ({
                                     value: exercise.exerciseName,
                                     label: exercise.exerciseName
                                   })
@@ -321,18 +325,18 @@ export default function WorkoutCard({ session }: { session: any }) {
                 </div>
                 <AccordionContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {workout.exercises.map((exercise, exerciseIndex) => (
-                      <Card key={exerciseIndex} className="font-light">
+                    {workout.ExerciseEntry.map((entry: any) => (
+                      <Card key={entry.exercise.id} className="font-light">
                         <div className="p-8 font-light flex flex-col justify-between h-full">
                           <div className="mb-4">
-                            <CardTitle>{exercise.exerciseName}</CardTitle>
-                            <p>Difficulty: {exercise.difficulty}</p>
-                            <p>Type: {exercise.type}</p>
-                            <p>Sets: {exercise.sets}</p>
-                            <p>Duration/Reps: {exercise.duration_reps}</p>
-                            <p>Muscle: {exercise.muscle}</p>
-                            <p>Equipment: {exercise.equipment}</p>
-                            <p>Instructions: {exercise.description}</p>
+                            <CardTitle>{entry.exercise.exerciseName}</CardTitle>
+                            <p>Difficulty: {entry.exercise.difficulty}</p>
+                            <p>Type: {entry.exercise.type}</p>
+                            <p>Sets: {entry.exercise.sets}</p>
+                            <p>Duration/Reps: {entry.exercise.duration_reps}</p>
+                            <p>Muscle: {entry.exercise.muscle}</p>
+                            <p>Equipment: {entry.exercise.equipment}</p>
+                            <p>Instructions: {entry.exercise.description}</p>
                           </div>
                         </div>
                       </Card>
