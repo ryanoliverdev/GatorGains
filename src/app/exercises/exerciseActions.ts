@@ -26,7 +26,6 @@ export async function editExerciseForUser(userId: string, exerciseId: string, ex
         if (exerciseDetails.sets) {
             exerciseDetails.sets = exerciseDetails.sets.toString();
         }
-        console.log(userId, exerciseDetails.exerciseName);
         const updatedExercise = await prisma.exercise.update({
             where: {
                 userId: userId,

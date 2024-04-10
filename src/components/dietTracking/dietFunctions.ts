@@ -151,8 +151,6 @@ export async function changeCalories(userId: string, newCalories: number) {
     }
   });
 
-  console.log(newChange);
-
   return true;
 }
 
