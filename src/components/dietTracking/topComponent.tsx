@@ -82,8 +82,6 @@ export default function TopComponent({
     setLoadId('');
   };
 
-  console.log(macroPercentages);
-
   const [newProteinPercentage, setNewProteinPercentage] = useState(
     macroPercentages.dailyProteinPercentage
   );
@@ -166,6 +164,8 @@ export default function TopComponent({
                             }
                             type="number"
                             id="setProtein"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             defaultValue={
                               macroPercentages.dailyProteinPercentage
                             }
@@ -178,6 +178,8 @@ export default function TopComponent({
                             }
                             type="number"
                             id="setCarbs"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             defaultValue={macroPercentages.dailyCarbsPercentage}
                             className="col-span-2 h-8"
                           />
@@ -188,6 +190,8 @@ export default function TopComponent({
                             }
                             type="number"
                             id="setFat"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             defaultValue={macroPercentages.dailyFatPercentage}
                             className="col-span-2 h-8"
                           />
