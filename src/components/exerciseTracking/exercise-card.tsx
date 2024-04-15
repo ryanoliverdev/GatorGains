@@ -134,6 +134,12 @@ export default function ExerciseCard({ options }: { options: any }) {
     }); // Reset form to blank values
   };
 
+  const handleDeleteClick = async (exercise: Exercise) => {
+    const currExercise = await getExerciseByName(options.user.id, exercise.exerciseName!);
+    setSelectedExerciseId(currExercise!.id!);
+    deleteExerciseForUser(options.user.id, currExercise!.id!);
+  }
+
   const handleEditClick = async (exercise: Exercise) => {
     const currExercise = await getExerciseByName(options.user.id, exercise.exerciseName!);
     setSelectedExerciseId(currExercise!.id!);
@@ -590,7 +596,7 @@ export default function ExerciseCard({ options }: { options: any }) {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => handleDeleteClick(exercise)}>Continue</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

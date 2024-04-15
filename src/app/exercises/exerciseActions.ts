@@ -42,14 +42,35 @@ export async function editExerciseForUser(userId: string, exerciseId: string, ex
     }
 }
 
-export async function deleteExerciseForUser(exerciseId: string) {
+export async function deleteExerciseForUser(userId: string, exerciseId: string) {
     try {
-        const deletedExercise = await prisma.exercise.delete({
-            where: {
+        const result = await prisma.$transaction(async prisma => {
+            const exercise = await prisma.exercise.findUnique({
+              where: {
                 id: exerciseId,
-            },
-        });
-        return deletedExercise;
+                userId: userId,
+              },
+            });
+      
+            if (!exercise) {
+              throw new Error('Exercise not found');
+            }
+            await prisma.exerciseEntry.deleteMany({
+              where: {
+                exerciseName: exercise.exerciseName,
+                workout: {
+                  userId: userId
+                },
+              },
+            });
+      
+            const deletedExercise = await prisma.exercise.delete({
+              where: {
+                id: exerciseId,
+              },
+            });
+            return deletedExercise;
+          });
     } catch (error) {
         console.error("Failed to delete exercise:", error);
         throw error;
@@ -186,6 +207,98 @@ export async function saveCustomWorkout(userId: string, workoutDetails: any) {
         return result;
     } catch (error) {
         console.error('Failed to save custom workout', error);
-        throw error;
     }
 }
+
+export async function updateWorkout(userId: string, oldWorkoutName: string, updatedWorkoutDetails: any) {
+    try {
+      const result = await prisma.$transaction(async (prisma) => {
+        const existingWorkout = await prisma.workout.findUnique({
+          where: {
+              userId,
+              workoutName: oldWorkoutName,
+          },
+        });
+  
+        if (!existingWorkout) {
+          throw new Error('Workout not found');
+        }
+  
+        const updatedWorkout = await prisma.workout.update({
+          where: {
+            id: existingWorkout.id,
+          },
+          data: {
+            workoutName: updatedWorkoutDetails.workoutName,
+            workoutDate: format(new Date(), 'MM-dd-yyyy'),
+          },
+        });
+
+        await prisma.exerciseEntry.deleteMany({
+          where: {
+            workoutId: existingWorkout.id,
+          },
+        });
+
+        for (const selectedExercise of updatedWorkoutDetails.exercises) {
+          const exerciseName = selectedExercise.exerciseName;
+          const exercise = await getExerciseByName(userId, exerciseName);
+          if (!exercise) {
+            console.error('Exercise not found:', exerciseName);
+            throw new Error('Exercise not found');
+          }
+          await prisma.exerciseEntry.create({
+            data: {
+              workoutId: updatedWorkout.id,
+              exerciseName: exerciseName,
+            },
+          });
+        }
+  
+        return updatedWorkout;
+      });
+  
+      console.log('Workout updated successfully:', result);
+      return result;
+    } catch (error) {
+      console.error('Failed to update workout', error);
+      throw error;
+    }
+  }
+
+  export async function deleteWorkout(userId: string, workoutName: string) {
+    try {
+      const result = await prisma.$transaction(async (prisma) => {
+        const workout = await prisma.workout.findUnique({
+          where: {
+            userId,
+            workoutName,
+          },
+        });
+  
+        if (!workout) {
+          throw new Error('Workout not found');
+        }
+
+        await prisma.exerciseEntry.deleteMany({
+          where: {
+            workoutId: workout.id,
+          },
+        });
+
+        const deletedWorkout = await prisma.workout.delete({
+          where: {
+            id: workout.id,
+          },
+        });
+  
+        return deletedWorkout;
+      });
+  
+      console.log('Workout deleted successfully:', result);
+      return result;
+    } catch (error) {
+      console.error('Failed to delete workout', error);
+      throw error;
+    }
+  }

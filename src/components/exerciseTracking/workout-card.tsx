@@ -38,7 +38,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, BaseSyntheticEvent } from 'react';
 import { useToast } from '../ui/use-toast';
 import { ToastAction } from '@radix-ui/react-toast';
 
@@ -55,7 +55,7 @@ import Select from 'react-select';
 import AutomatedWorkout from '@/components/exerciseTracking/automatedWorkout';
 import { MultiValue, ActionMeta } from 'react-select';
 import { Workout } from '@/components/exerciseTracking/automatedWorkout';
-import { getAllWorkouts, saveCustomWorkout } from '@/app/exercises/exerciseActions';
+import { getUserExercises, getAllWorkouts, saveCustomWorkout, updateWorkout, deleteWorkout } from '@/app/exercises/exerciseActions';
 
 import ValueType from 'react-select';
 const formSchema = z.object({
@@ -83,14 +83,24 @@ export default function WorkoutCard({ session }: { session: any }) {
     setChangesMade(false);
   }
 
-  async function onSubmitEdit(values: z.infer<typeof formSchema>) {
-    //edit exercises here
+  async function onSubmitEdit(values: z.infer<typeof formSchema>, oldWorkoutName: string) {
+    const workoutDetails = {
+      workoutName: values.workoutName,
+      exercises: selected.map(ex => {
+        return { exerciseName: ex.label };
+      }),
+    };
+    updateWorkout(session.user.id, oldWorkoutName, workoutDetails);
 
     console.log(values);
     console.log(selected);
     setChangesMade(false);
   }
 
+  const handleSubmitEdit = (oldWorkoutName: string) => async (values: z.infer<typeof formSchema>, event?: BaseSyntheticEvent) => {
+    await onSubmitEdit(values, oldWorkoutName);
+    event?.preventDefault();
+  };
   const handleCustomClick = () => {
     form.reset({
       workoutName: ''
@@ -115,13 +125,12 @@ export default function WorkoutCard({ session }: { session: any }) {
   const [selected, setSelected] = useState<SelectedOption[]>([]);
   const [changesMade, setChangesMade] = useState(false);
   const [userWorkout, setUserWorkout] = useState<any[]>([]);
+  const [userExercises, setUserExercises] = useState<any[]>([]);
 
-  const options = userWorkout.flatMap((workout) =>
-    workout.ExerciseEntry.map((exercise: any) => ({
-      value: exercise.exerciseName,
-      label: exercise.exerciseName,
-    }))
-  );
+  const options = userExercises!.map(workout => ({
+    value: workout.exerciseName,
+    label: workout.exerciseName
+  }));
 
   const handleSelectChange = (
     newValue: MultiValue<{ value: string; label: string }>,
@@ -141,6 +150,8 @@ export default function WorkoutCard({ session }: { session: any }) {
       try {
         const workouts = await getAllWorkouts(userId);
         setUserWorkout(workouts);
+        const exercises = await getUserExercises(userId);
+        setUserExercises(exercises);
       } catch (error) {
         console.error('Failed to retrieve exercises for user', error);
         throw error;
@@ -249,7 +260,7 @@ export default function WorkoutCard({ session }: { session: any }) {
                         </div>
                         <Form {...form}>
                           <form
-                            onSubmit={form.handleSubmit(onSubmitEdit)}
+                            onSubmit={form.handleSubmit(handleSubmitEdit(workout.workoutName))} 
                             className="space-y-1"
                           >
                             <FormField
@@ -317,7 +328,7 @@ export default function WorkoutCard({ session }: { session: any }) {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction>Continue</AlertDialogAction>
+                          <AlertDialogAction onClick={async () => deleteWorkout(session.user.id, workout.workoutName)}>Continue</AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
