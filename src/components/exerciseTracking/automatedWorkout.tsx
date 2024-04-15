@@ -117,8 +117,8 @@ export default function AutomatedWorkout({ session }: { session: any }) {
       <AlertDialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 sm:mt-0 rounded-lg inline-block px-4 py-2">
         Create New Automated Workout
       </AlertDialogTrigger>
-      <AlertDialogContent className={isCurrentWorkout ? "h-4/5" : "h-2/6"}>
-      <ScrollArea className="hw-full rounded-md  mt-8">
+      <AlertDialogContent className={isCurrentWorkout ? "h-4/5" : "h-auto"}>
+      <ScrollArea className="hw-full rounded-md  mt-4">
         <div className="flex items-center justify-end">
           <AlertDialogCancel onClick={resetWorkout}>
             <XIcon className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function AutomatedWorkout({ session }: { session: any }) {
             {isCurrentWorkout ? (
               <div>
                 <CardTitle className="mt-8">{currentWorkout?.name}</CardTitle>
-                <ScrollArea className=" h-[600px] sm:h-[600px] w-full rounded-md border p-2 sm:p-0 mt-8">
+                
                   {currentWorkout?.exercises.map((exercise, exerciseIndex) => (
                     <Card key={exerciseIndex} className="font-light mt-2 mx-2 sm:mx-0 mb-2">
                       <div className="p-8 font-light flex flex-col justify-between  h-full">
@@ -168,7 +168,7 @@ export default function AutomatedWorkout({ session }: { session: any }) {
                       </div>
                     </Card>
                   ))}
-                </ScrollArea>
+                
                 <div className="mt-16 ">Do you want to save this Workout?</div>
                 <div className="mb-12">
                 <AlertDialogAction onClick={saveWorkout}>
@@ -185,7 +185,7 @@ export default function AutomatedWorkout({ session }: { session: any }) {
               </div>
             ) : (
               <div className="flex justify-center items-end h-full">
-              <Button type="submit" className="mt-16 mx-1">
+              <Button type="submit" className="mt-4 mx-1">
                 Generate Workout
               </Button>
             </div>

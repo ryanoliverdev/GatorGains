@@ -10,6 +10,7 @@ import { Card, CardContent, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '../ui/table';
 import MacroChart from './macroChart';
+import MacroProgress from './macroProgressBar';
 
 interface FoodItem {
     food_name: string;
@@ -17,8 +18,15 @@ interface FoodItem {
     calories: number;
     protein: number;
 }
+interface Macros {
+  name: string;
+  value: number;
+}
+[];
 
-export default function DashboardTopComponent({ macros, foods, calInfo }: { macros: any, foods: FoodItem[], calInfo: number}) {
+export default function DashboardTopComponent({ macros, foods, calInfo, userDailyCalories, macroPercentages}: { macros: Macros[], foods: FoodItem[], calInfo: number,userDailyCalories: number, macroPercentages: any}) {
+
+
   return (
       
           <div className="flex gap-2 flex-col md:flex-row items-center sm:justify-center mt-5">
@@ -26,12 +34,26 @@ export default function DashboardTopComponent({ macros, foods, calInfo }: { macr
               <CardTitle className="text-center mt-6">
                 Macro Information
               </CardTitle>
-              <CardContent className="w-[310px] h-[300px]">
-                <MacroChart macros={macros}></MacroChart>
+              <CardContent className="w-auto h-auto">
+              <div className="w-[348px] h-[348px]">
+                  <MacroChart macros={macros}></MacroChart>
+                </div>
+                <div className="flex flex-col w-full font-semibold gap-1">
+                  {macros.map((macro) => (
+                    <MacroProgress
+                      totalEaten={calInfo}
+                      key={macro.name}
+                      type={macro.name}
+                      dailyCals={userDailyCalories}
+                      amount={macro.value}
+                      macroInfo={macroPercentages}
+                    />
+                  ))}
+                </div>
               </CardContent>
             </Card>
             <Card className="w-fit">
-              <CardContent className="w-fit pt-5 h-[300px">
+              <CardContent className="w-fit pt-5 h-[300px]">
                 <ScrollArea className="h-[260px] rounded-md ">
                   <Table className='w-fit'>
                     <TableHeader>
