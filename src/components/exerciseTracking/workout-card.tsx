@@ -114,7 +114,7 @@ export default function WorkoutCard({ session }: { session: any }) {
 
   const handleEditClick = (workout: any) => {
     form.reset({
-      workoutName: workout.name
+      workoutName: workout.workoutName
     }); // Update default values for the form
   };
 
@@ -170,8 +170,7 @@ export default function WorkoutCard({ session }: { session: any }) {
           >
             Create New Custom Workout
           </AlertDialogTrigger>
-          <AlertDialogContent className="h-2/5">
-            <ScrollArea>
+          <AlertDialogContent className="h-auto">
               <div className="flex items-center justify-end">
                 <AlertDialogCancel>
                   <div onClick={handleExitClick}>
@@ -219,7 +218,6 @@ export default function WorkoutCard({ session }: { session: any }) {
                   </AlertDialogAction>
                 </form>
               </Form>
-            </ScrollArea>
           </AlertDialogContent>
         </AlertDialog>
         <AutomatedWorkout session={session}></AutomatedWorkout>
@@ -227,7 +225,7 @@ export default function WorkoutCard({ session }: { session: any }) {
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
         Your Workouts
       </h1>
-      <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border ">
+      <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border mb-8 ">
         <Accordion type="single" collapsible className="w-full">
           {userWorkout.map((workout, index) => (
             <div key={index} className="my-2 sm:m-auto">

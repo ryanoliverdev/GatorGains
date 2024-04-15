@@ -4,7 +4,7 @@ import DietComponent from './diet';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Progress } from '../ui/progress';
-import getCalorieInfo, { getFoodItems, getMacroInfo } from './dietFunctions';
+import getCalorieInfo, { getFoodItems, getMacroInfo, getMacroPercentages } from './dietFunctions';
 import TopComponent from './topComponent';
 import DashboardTopComponent from './dashboardTopComponent';
 import { Card, CardTitle } from '@/components/ui/card';
@@ -12,9 +12,11 @@ export default async function DashboardDiet() {
   const session = await getServerSession(authOptions);
 
   if (session !== null) {
+
     const calInfo = await getCalorieInfo(session.user.id);
     const macroInfo = await getMacroInfo(session.user.id);
     const foodItems = await getFoodItems(session.user.id);
+    const macroPercentages = await getMacroPercentages(session.user.id);
 
     return (
       <div className="p-4">
@@ -36,6 +38,8 @@ export default async function DashboardDiet() {
             macros={macroInfo}
             calInfo={calInfo.totalFoodCalories}
             foods={foodItems}
+            userDailyCalories={calInfo.userDailyCalories}
+            macroPercentages={macroPercentages}
           ></DashboardTopComponent>
         </div>
       </div>

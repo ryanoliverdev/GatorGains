@@ -1,8 +1,10 @@
 'use server';
 import { CardHeader, CardContent, Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { prisma } from '@/lib/prisma';
 
-export default async function SummaryCard({ options }: { options: any }) {
+export default async function SummaryCard({ options, totalFoodCalories, xp }: { options: any, totalFoodCalories: number, xp: any  }) {
+   
 
 
   /*function getGreeting() {
@@ -32,6 +34,8 @@ export default async function SummaryCard({ options }: { options: any }) {
 
     return `As of ${formattedDateTime}`;
   }
+
+
 
   return (
     <div className="flex flex-col sm:flex-row justify-center sm:justify-evenly ">
@@ -72,7 +76,7 @@ export default async function SummaryCard({ options }: { options: any }) {
     <div className="grid w-full grid-cols-2 items-stretch justify-center gap-4 justify-items-center">
       <div className="flex flex-col items-center justify-center space-y-2">
         <span className="text-sm font-medium">Calories Eaten</span>
-        <span className="text-2xl font-extrabold">1,245</span>
+        <span className="text-2xl font-extrabold">{totalFoodCalories}</span>
       </div>
       <div className="flex flex-col items-center justify-center space-y-2">
         <span className="text-sm font-medium">Calories Burned</span>
@@ -80,7 +84,7 @@ export default async function SummaryCard({ options }: { options: any }) {
       </div>
     <div className="flex flex-col items-center justify-center space-y-2">
         <span className="text-sm font-medium">XP</span>
-        <span className="text-2xl font-extrabold">20</span>
+        <span className="text-2xl font-extrabold">{xp}</span>
       </div>
       <div className="flex flex-col items-center justify-center space-y-2">
         <span className="text-sm font-medium">Streak (Days)</span>
