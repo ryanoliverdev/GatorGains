@@ -46,7 +46,7 @@ export default async function IndLeaderBoard() {
     return <p>No Access</p>;
   } else {
     return (
-      <div className="container my-6 space-y-6">
+      <div className="container my-6 space-y-6 mb-6">
         <GroupContent
           groups={topGroups.groups} // Update the type of the groups prop
           userId={session.user.id}

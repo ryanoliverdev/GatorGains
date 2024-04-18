@@ -47,6 +47,10 @@ export default async function IndLeaderBoard() {
   } else {
     return (
       <div className="container my-6 space-y-6">
+        <div className='flex justify-center items-center mb-12 mt-12'>
+          <h1 className="animatedText font-bold text-6xl drop-shadow-md">Leaderboard</h1>
+          <h1 className="animatedTrophy font-bold text-5xl drop-shadow-md">🏆</h1>
+        </div>
         <div className="flex justify-center">
           <div className="w-full max-w-3xl rounded-lg border divide-y shadow-sm">
             {topUsers.map((topUser, i) => (
