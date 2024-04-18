@@ -32,7 +32,7 @@ export default function DashboardTopComponent({ macros, foods, calInfo, userDail
           <div className="flex gap-2 flex-col md:flex-row items-center sm:justify-center mt-5">
             <Card className="w-fit border-0 shadow-none md:border md:shadow-sm ">
               <CardTitle className="text-center mt-6">
-                Macro Information
+                Macro Information📊
               </CardTitle>
               <CardContent className="w-auto h-auto">
               <div className="w-[348px] h-[348px]">

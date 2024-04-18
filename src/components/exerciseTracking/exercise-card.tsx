@@ -54,6 +54,7 @@ import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
 import { getUserExercises } from '@/app/exercises/exerciseActions';
 import { Exercise } from '@/components/exerciseTracking/automatedExercise';
 import { createExerciseForUser, editExerciseForUser, deleteExerciseForUser, getExerciseByName } from '@/app/exercises/exerciseActions';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   exerciseName: z.string().min(1, {
@@ -101,7 +102,6 @@ export default function ExerciseCard({ options }: { options: any }) {
       description: values.description !== undefined ? values.description : null,
     };
     createExerciseForUser(options.user.id, exerciseValues);
-
     console.log(values);
   }
 
@@ -361,7 +361,7 @@ export default function ExerciseCard({ options }: { options: any }) {
       </div>
 
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
-        Your Exercises
+        Your Exercises 🏋
       </h1>
       <ScrollArea className="p-3 h-[800px] sm:h-[850px] w-full rounded-md border  mx-0 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

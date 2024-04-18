@@ -155,8 +155,17 @@ export function MobileNav({ options }: { options: any }) {
               <MobileLink href="/dashboard" onOpenChange={setOpen}>
                 Dashboard
               </MobileLink>
-              <MobileLink href="/groups" onOpenChange={setOpen}>
+              <MobileLink className='font-semibold' href="/groups/view" onOpenChange={setOpen}>
                 Groups
+              </MobileLink>
+              <MobileLink className='ml-5' href="/groups/create" onOpenChange={setOpen}>
+                Create Group
+              </MobileLink>
+              <MobileLink className='ml-5' href="/groups/find" onOpenChange={setOpen}>
+                Find Groups
+              </MobileLink>
+              <MobileLink className='ml-5' href="/groups/view" onOpenChange={setOpen}>
+                View My Groups
               </MobileLink>
               <MobileLink
                 href="/leaderboards"

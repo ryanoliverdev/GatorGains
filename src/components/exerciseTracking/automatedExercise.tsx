@@ -1,3 +1,5 @@
+"use client"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,6 +42,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { Icons } from '../ui/icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { createExerciseForUser } from '@/app/exercises/exerciseActions';
+import { useRouter } from 'next/navigation';
 
 export interface Exercise {
   id: string;
@@ -64,6 +67,8 @@ export default function AutomatedExercise({ options }: { options: any }) {
   const [currentExercise, setCurrentExercise] = useState<Exercise | null>(null);
   const [isLoading, setisLoading] = useState(false);
 
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema)
   });
@@ -78,11 +83,12 @@ export default function AutomatedExercise({ options }: { options: any }) {
   };
 
   //push new exercise to database here
-  const saveExercise = () => {
-    createExerciseForUser(options.user.id, currentExercise!);
-
+  const saveExercise = async () => {
+    await createExerciseForUser(options.user.id, currentExercise!);
     setIsCurrentExercise(false);
     setCurrentExercise(null);
+
+    router.refresh();
   };
 
   async function createExercise(message: String) {

@@ -231,7 +231,7 @@ export default function WorkoutCard({ session }: { session: any }) {
         <AutomatedWorkout session={session}></AutomatedWorkout>
       </div>
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
-        Your Workouts
+        Your Workouts 🏃
       </h1>
       <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border mb-8 ">
         <Accordion type="single" collapsible className="w-full">

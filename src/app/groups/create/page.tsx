@@ -15,7 +15,7 @@ export default async function createGroup() {
   return (
     <div className="container flex flex-col items-center mt-5">
         <h1 className='text-center mb-5 text-xl font-bold'>Create a Group</h1>
-      <Card className='max-w-3xl w-full p-4'>
+      <Card className='max-w-3xl w-full p-4 mb-5'>
         <CreateGroupForm session={session} />
       </Card>
     </div>
