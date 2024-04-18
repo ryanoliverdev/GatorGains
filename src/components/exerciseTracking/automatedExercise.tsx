@@ -45,6 +45,7 @@ import { createExerciseForUser } from '@/app/exercises/exerciseActions';
 import { useRouter } from 'next/navigation';
 
 export interface Exercise {
+  id: string;
   exerciseName: string;
   difficulty: string | null;
   type: string | null;

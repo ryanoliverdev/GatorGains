@@ -117,18 +117,19 @@ model Workout {
 model ExerciseEntry {
   id           String   @id @default(cuid())
   workoutId    String
-  exerciseName String
+  exerciseId   String
+  exerciseUserId String
   workout      Workout  @relation(fields: [workoutId], references: [id])
-  exercise     Exercise @relation(fields: [exerciseName], references: [exerciseName])
+  exercise     Exercise @relation(fields: [exerciseId, exerciseUserId], references: [id, userId])
 
   @@index([workoutId])
-  @@index([exerciseName])
+  @@index([exerciseId, exerciseUserId])
 }
 
 model Exercise {
-  id            String          @id @default(cuid())
+  id            String          @default(cuid())
   userId        String
-  exerciseName  String          @unique
+  exerciseName  String         
   difficulty    String?
   type          String?
   sets          String?
@@ -140,9 +141,9 @@ model Exercise {
   user          User            @relation(fields: [userId], references: [id])
   ExerciseEntry ExerciseEntry[]
 
-  @@index([userId])
+  @@id([id, userId])
+  @@index([userId, exerciseName])
 }
-
 model DailyFoodLog {
   id        String      @id @default(cuid())
   userId    String
