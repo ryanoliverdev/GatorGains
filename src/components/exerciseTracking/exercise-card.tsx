@@ -90,7 +90,7 @@ export default function ExerciseCard({ options }: { options: any }) {
   });
 
   async function onSubmitCustom(values: z.infer<typeof formSchema>) {
-    const exerciseValues: Exercise = {
+    const exerciseValues: any = {
       exerciseName: values.exerciseName,
       difficulty: values.difficulty !== undefined ? values.difficulty : null,
       type: values.type !== undefined ? values.type : null,
@@ -106,14 +106,14 @@ export default function ExerciseCard({ options }: { options: any }) {
   }
 
   async function onSubmitEdit(values: z.infer<typeof formSchema>) {
-    const exerciseValues: Exercise = {
+    const exerciseValues: any = {
       exerciseName: values.exerciseName,
       difficulty: values.difficulty !== undefined ? values.difficulty : null,
       type: values.type !== undefined ? values.type : null,
       sets: values.sets !== undefined ? values.sets : null,
       duration_reps: values.duration_reps !== undefined ? values.duration_reps : null,
       muscle: values.muscle !== undefined ? values.muscle : null,
-      equipment: values.equipment !== undefined ? values.equipment : null, 
+      equipment: values.equipment !== undefined ? values.equipment : null,
       description: values.description !== undefined ? values.description : null,
     };
     editExerciseForUser(options.user.id, selectedExerciseId!, exerciseValues);

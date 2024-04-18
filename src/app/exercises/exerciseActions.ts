@@ -28,8 +28,10 @@ export async function editExerciseForUser(userId: string, exerciseId: string, ex
         }
         const updatedExercise = await prisma.exercise.update({
             where: {
+              id_userId: {
                 userId: userId,
                 id: exerciseId
+              }
             },
             data: {
                 ...exerciseDetails
@@ -47,8 +49,10 @@ export async function deleteExerciseForUser(userId: string, exerciseId: string) 
         const result = await prisma.$transaction(async prisma => {
             const exercise = await prisma.exercise.findUnique({
               where: {
-                id: exerciseId,
-                userId: userId,
+                id_userId: {
+                  id: exerciseId,
+                  userId: userId,
+                }
               },
             });
       
@@ -57,7 +61,7 @@ export async function deleteExerciseForUser(userId: string, exerciseId: string) 
             }
             await prisma.exerciseEntry.deleteMany({
               where: {
-                exerciseName: exercise.exerciseName,
+                exerciseId: exercise.id,
                 workout: {
                   userId: userId
                 },
@@ -66,7 +70,10 @@ export async function deleteExerciseForUser(userId: string, exerciseId: string) 
       
             const deletedExercise = await prisma.exercise.delete({
               where: {
-                id: exerciseId,
+                id_userId: {
+                  id: exerciseId,
+                  userId: userId,
+                }
               },
             });
             return deletedExercise;
@@ -107,13 +114,17 @@ export async function getExerciseByName(userId: string, exerciseName: string) {
 }
 
 export async function saveWorkoutForUser(userId: string, workoutDetails: any) {
-    const exerciseNames = [];
+  const exerciseIds: any[] = [];
   for (const exercise of workoutDetails.exercises) {
     let exerciseRecord = await prisma.exercise.findFirst({
       where: {
-        exerciseName: exercise.exerciseName,
         userId: userId,
+        exerciseName: exercise.exerciseName,
       },
+      select: {
+        id: true,
+        userId: true
+      }
     });
 
     if (!exerciseRecord) {
@@ -126,12 +137,13 @@ export async function saveWorkoutForUser(userId: string, workoutDetails: any) {
           equipment: exercise.equipment,
           muscle: exercise.muscle,
           sets: exercise.sets.toString(),
-          type: exercise.type
+          type: exercise.type,
+          description: exercise.description,
         },
       });
     }
 
-    exerciseNames.push(exerciseRecord.exerciseName);
+    exerciseIds.push({id: exerciseRecord.id, userId: exerciseRecord.userId });
   }
 
   const workout = await prisma.workout.create({
@@ -142,11 +154,12 @@ export async function saveWorkoutForUser(userId: string, workoutDetails: any) {
     },
   });
 
-  for (const exerciseName of exerciseNames) {
+  for (const { id, userId } of exerciseIds) {
     await prisma.exerciseEntry.create({
       data: {
         workoutId: workout.id,
-        exerciseName: exerciseName
+        exerciseId: id,
+        exerciseUserId: userId
       },
     });
   }
@@ -185,21 +198,22 @@ export async function saveCustomWorkout(userId: string, workoutDetails: any) {
             });
 
             for (const selectedExercise of workoutDetails.exercises) {
-                const exerciseName = selectedExercise.exerciseName;
-                const exercise = await getExerciseByName(userId, exerciseName);
+              const exerciseName = selectedExercise.exerciseName;
+              const exercise = await getExerciseByName(userId, exerciseName);
 
-                if (!exercise) {
-                    console.error('Exercise not found:', exerciseName);
-                    throw new Error('Exercise not found');
-                }
+              if (!exercise) {
+                  console.error('Exercise not found:', exerciseName);
+                  throw new Error('Exercise not found');
+              }
 
-                await prisma.exerciseEntry.create({
-                    data: {
-                        workoutId: workout.id,
-                        exerciseName: exerciseName,
-                    },
-                });
-            }
+              await prisma.exerciseEntry.create({
+                  data: {
+                      workoutId: workout.id,
+                      exerciseId: exercise.id,
+                      exerciseUserId: exercise.userId
+                  },
+              });
+          }
             return workout;
         });
 
@@ -250,7 +264,8 @@ export async function updateWorkout(userId: string, oldWorkoutName: string, upda
           await prisma.exerciseEntry.create({
             data: {
               workoutId: updatedWorkout.id,
-              exerciseName: exerciseName,
+              exerciseId: exercise.id,
+              exerciseUserId: userId
             },
           });
         }

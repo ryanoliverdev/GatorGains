@@ -127,10 +127,18 @@ export default function WorkoutCard({ session }: { session: any }) {
   const [userWorkout, setUserWorkout] = useState<any[]>([]);
   const [userExercises, setUserExercises] = useState<any[]>([]);
 
+  console.log('userExercises: ',userExercises);
+  console.log('userWorkout: ',userWorkout);
   const options = userExercises!.map(workout => ({
     value: workout.exerciseName,
     label: workout.exerciseName
   }));
+
+  // const defaultOptions = userWorkout.ExerciseEntry!.map(workout => ({
+  //   value: workout.workoutName,
+  //   label: workout.workoutName
+  // }));
+  console.log('options: ',  options);
 
   const handleSelectChange = (
     newValue: MultiValue<{ value: string; label: string }>,
@@ -286,19 +294,26 @@ export default function WorkoutCard({ session }: { session: any }) {
 
                             <div className="">
                               <h1>Select Exercises in Workout</h1>
-
                               <Select
                                 options={options}
                                 isMulti
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                                 onChange={handleSelectChange}
-                                defaultValue={workout!.ExerciseEntry.map(
-                                  (exercise: { exerciseName: any; }) => ({
-                                    value: exercise.exerciseName,
-                                    label: exercise.exerciseName
-                                  })
-                                )}
+                                // userWorkout[0]?.ExerciseEntry[0].exercise.exerciseName
+                                defaultValue={workout.ExerciseEntry.map((entry: { exercise: { exerciseName: any; }; }) => ({
+                                  value: entry.exercise.exerciseName,
+                                  label: entry.exercise.exerciseName
+                                }))}
+                                
+                                
+
+                                //.map(
+                                //   (exercise) => ({
+                                //     value: exercise.exerciseName,
+                                //     label: exercise.exerciseName
+                                //   })
+                                // )}
                               />
                             </div>
                             <AlertDialogAction
