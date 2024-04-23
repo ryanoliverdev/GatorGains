@@ -121,7 +121,7 @@ export default function TopComponent({
           <div className="flex gap-6 flex-col lg:flex-row items-center sm:justify-center mt-5">
             <Card className="w-fit border-0 shadow-none sm:border sm:shadow-sm ">
               <CardTitle className="text-center mt-6">
-                Macro Information
+                Macro Information📊
               </CardTitle>
               <CardContent className="flex flex-col">
                 <div className="w-[348px] h-[348px]">
@@ -219,7 +219,7 @@ export default function TopComponent({
               </CardFooter>
             </Card>
             <Card className="w-fit sm:w-full">
-              <CardTitle className="text-center mt-6">Added Foods</CardTitle>
+              <CardTitle className="text-center mt-6">Added Foods🍝</CardTitle>
               <CardContent className="w-full pt-5">
                 <ScrollArea className="h-[396px] rounded-md ">
                   <Table>

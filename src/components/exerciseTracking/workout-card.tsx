@@ -127,10 +127,18 @@ export default function WorkoutCard({ session }: { session: any }) {
   const [userWorkout, setUserWorkout] = useState<any[]>([]);
   const [userExercises, setUserExercises] = useState<any[]>([]);
 
+  console.log('userExercises: ',userExercises);
+  console.log('userWorkout: ',userWorkout);
   const options = userExercises!.map(workout => ({
     value: workout.exerciseName,
     label: workout.exerciseName
   }));
+
+  // const defaultOptions = userWorkout.ExerciseEntry!.map(workout => ({
+  //   value: workout.workoutName,
+  //   label: workout.workoutName
+  // }));
+  console.log('options: ',  options);
 
   const handleSelectChange = (
     newValue: MultiValue<{ value: string; label: string }>,
@@ -223,7 +231,7 @@ export default function WorkoutCard({ session }: { session: any }) {
         <AutomatedWorkout session={session}></AutomatedWorkout>
       </div>
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
-        Your Workouts
+        Your Workouts 🏃
       </h1>
       <ScrollArea className="p-6 h-[800px] sm:h-[850px] w-full rounded-md border mb-8 ">
         <Accordion type="single" collapsible className="w-full">
@@ -286,19 +294,26 @@ export default function WorkoutCard({ session }: { session: any }) {
 
                             <div className="">
                               <h1>Select Exercises in Workout</h1>
-
                               <Select
                                 options={options}
                                 isMulti
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                                 onChange={handleSelectChange}
-                                defaultValue={workout!.ExerciseEntry.map(
-                                  (exercise: { exerciseName: any; }) => ({
-                                    value: exercise.exerciseName,
-                                    label: exercise.exerciseName
-                                  })
-                                )}
+                                // userWorkout[0]?.ExerciseEntry[0].exercise.exerciseName
+                                defaultValue={workout.ExerciseEntry.map((entry: { exercise: { exerciseName: any; }; }) => ({
+                                  value: entry.exercise.exerciseName,
+                                  label: entry.exercise.exerciseName
+                                }))}
+                                
+                                
+
+                                //.map(
+                                //   (exercise) => ({
+                                //     value: exercise.exerciseName,
+                                //     label: exercise.exerciseName
+                                //   })
+                                // )}
                               />
                             </div>
                             <AlertDialogAction

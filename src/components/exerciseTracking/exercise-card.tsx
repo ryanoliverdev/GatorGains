@@ -54,6 +54,7 @@ import AutomatedExercise from '@/components/exerciseTracking/automatedExercise';
 import { getUserExercises } from '@/app/exercises/exerciseActions';
 import { Exercise } from '@/components/exerciseTracking/automatedExercise';
 import { createExerciseForUser, editExerciseForUser, deleteExerciseForUser, getExerciseByName } from '@/app/exercises/exerciseActions';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   exerciseName: z.string().min(1, {
@@ -90,7 +91,7 @@ export default function ExerciseCard({ options }: { options: any }) {
   });
 
   async function onSubmitCustom(values: z.infer<typeof formSchema>) {
-    const exerciseValues: Exercise = {
+    const exerciseValues: any = {
       exerciseName: values.exerciseName,
       difficulty: values.difficulty !== undefined ? values.difficulty : null,
       type: values.type !== undefined ? values.type : null,
@@ -101,19 +102,18 @@ export default function ExerciseCard({ options }: { options: any }) {
       description: values.description !== undefined ? values.description : null,
     };
     createExerciseForUser(options.user.id, exerciseValues);
-
     console.log(values);
   }
 
   async function onSubmitEdit(values: z.infer<typeof formSchema>) {
-    const exerciseValues: Exercise = {
+    const exerciseValues: any = {
       exerciseName: values.exerciseName,
       difficulty: values.difficulty !== undefined ? values.difficulty : null,
       type: values.type !== undefined ? values.type : null,
       sets: values.sets !== undefined ? values.sets : null,
       duration_reps: values.duration_reps !== undefined ? values.duration_reps : null,
       muscle: values.muscle !== undefined ? values.muscle : null,
-      equipment: values.equipment !== undefined ? values.equipment : null, 
+      equipment: values.equipment !== undefined ? values.equipment : null,
       description: values.description !== undefined ? values.description : null,
     };
     editExerciseForUser(options.user.id, selectedExerciseId!, exerciseValues);
@@ -361,7 +361,7 @@ export default function ExerciseCard({ options }: { options: any }) {
       </div>
 
       <h1 className="text-3xl font-bold text-primary text-center my-6 lg:text-4xl">
-        Your Exercises
+        Your Exercises 🏋
       </h1>
       <ScrollArea className="p-3 h-[800px] sm:h-[850px] w-full rounded-md border  mx-0 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -27,7 +27,9 @@ export function AvatarMenu({ options }: { options: any }) {
         <DropdownMenuTrigger asChild>
           <Avatar className="md:ml-3 shadow-md cursor-pointer">
             <AvatarImage src={options.user.image} alt="@shadcn" />
-            <AvatarFallback>{options.user.name.charAt(0).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {options.user.name.charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
@@ -40,17 +42,15 @@ export function AvatarMenu({ options }: { options: any }) {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>Group</DropdownMenuItem>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem>Email</DropdownMenuItem>
-                  <DropdownMenuItem>Message</DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuItem>New Group</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/groups/create">Create Group</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/groups/find">Find Groups</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/groups/view">View Groups</Link>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={() => signOut()}>
